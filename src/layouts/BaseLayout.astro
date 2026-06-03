@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+import FlowMark from '../components/FlowMark.astro';
+
+const {
+  title = 'StudentFlow',
+  description = 'StudentFlow brings your courses, assignments, and GPA into one calm, beautiful place.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#595BCD" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <header class="nav">
+      <a href="/" class="brand">
+        <FlowMark size={30} gradId="fgNav" />
+        <span>StudentFlow</span>
+      </a>
+      <nav class="nav-links">
+        <a href="/#features">Features</a>
+        <a href="/blog">Blog</a>
+        <a href="/#get" class="btn btn-sm">Get the app</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="brand">
+        <FlowMark size={26} gradId="fgFoot" />
+        <span>StudentFlow</span>
+      </div>
+      <p>© 2026 StudentFlow. Made for students, in flow.</p>
+    </footer>
+  </body>
+</html>

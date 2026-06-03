@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Auto-collects every Markdown post in this folder, newest first.
+// To publish a new update: add a `.md` file next to this one (see welcome post).
+const posts = Object.values(import.meta.glob('./*.md', { eager: true })).sort(
+  (a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate)
+);
+
+const fmt = (d) =>
+  new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title="StudentFlow — Blog"
+  description="Product updates, design notes, and study tips from the StudentFlow team."
+>
+  <div class="blog-wrap">
+    <div class="blog-head">
+      <h1>Updates</h1>
+      <p>Product news, design notes, and study tips from the StudentFlow team.</p>
+    </div>
+
+    <div class="post-list">
+      {
+        posts.map((post) => (
+          <a class="post-card" href={post.url}>
+            <p class="date">{fmt(post.frontmatter.pubDate)}</p>
+            <h2>{post.frontmatter.title}</h2>
+            <p>{post.frontmatter.description}</p>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

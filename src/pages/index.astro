@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FlowMark from '../components/FlowMark.astro';
+
+const features = [
+  {
+    title: 'Academic dashboard',
+    body: 'Every course, grade, and deadline at a glance — organized by term.',
+    color: 'var(--accent)',
+    soon: false,
+  },
+  {
+    title: 'GPA tracking',
+    body: 'Always know exactly where you stand, course by course.',
+    color: 'var(--mint)',
+    soon: false,
+  },
+  {
+    title: 'Assignments & study',
+    body: 'Turn your to-dos into focused, satisfying study sessions.',
+    color: 'var(--amber)',
+    soon: false,
+  },
+  {
+    title: 'Living Flow design',
+    body: 'A calm, mesmerizing interface that makes studying feel good.',
+    color: 'var(--lavender)',
+    soon: false,
+  },
+  {
+    title: 'GPA calculator & degree progress',
+    body: 'Plan the grades you need and watch your degree fill in.',
+    color: 'var(--coral)',
+    soon: true,
+  },
+  {
+    title: 'Canvas sync',
+    body: 'Bring your Canvas courses and assignments in automatically.',
+    color: 'var(--accent-deep)',
+    soon: true,
+  },
+];
+---
+
+<BaseLayout
+  title="StudentFlow — Your semester, in flow"
+  description="StudentFlow brings your courses, assignments, and GPA into one calm, beautiful place — so you can focus on the work, not the chaos."
+>
+  <!-- ───────────────── Hero ───────────────── -->
+  <section class="hero">
+    <div class="aurora" aria-hidden="true">
+      <span class="blob b1"></span>
+      <span class="blob b2"></span>
+      <span class="blob b3"></span>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-mark"><FlowMark size={78} gradId="fgHero" /></div>
+      <h1>Your semester,<br /><span class="grad-text">in flow.</span></h1>
+      <p class="lede">
+        StudentFlow brings your courses, assignments, and GPA into one calm, beautiful place —
+        so you can focus on the work, not the chaos.
+      </p>
+
+      <div class="cta" id="get">
+        <!-- TODO: replace "#" with your App Store link once the app is live -->
+        <a href="#" class="btn btn-lg">Coming to the App Store</a>
+        <a href="/blog" class="btn btn-ghost btn-lg">Read the latest →</a>
+      </div>
+
+      <!-- TODO: drop your hero video / app screenshot in here when it's ready -->
+      <div class="hero-media" aria-hidden="true">
+        <div class="media-placeholder">App preview coming soon</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────── Features ───────────────── -->
+  <section class="section" id="features">
+    <h2 class="section-title">Everything school, in one calm place</h2>
+    <p class="section-sub">
+      No more juggling tabs, sticky notes, and half-finished spreadsheets. Just your studies, organized.
+    </p>
+
+    <div class="features">
+      {
+        features.map((f) => (
+          <article class="card" style={`--card-accent:${f.color}`}>
+            {f.soon && <span class="pill">Soon</span>}
+            <div class="card-dot" />
+            <h3>{f.title}</h3>
+            <p>{f.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ───────────────── Closing CTA ───────────────── -->
+  <section class="section cta-band">
+    <h2>Find your flow this semester.</h2>
+    <p>Be the first to know when StudentFlow lands — and follow along as we build it.</p>
+    <!-- TODO: replace "#" with your App Store link once the app is live -->
+    <a href="#" class="btn btn-lg">Coming to the App Store</a>
+  </section>
+</BaseLayout>
