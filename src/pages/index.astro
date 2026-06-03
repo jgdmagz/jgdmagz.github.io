@@ -49,8 +49,9 @@ const features = [
   <!-- ───────────────── Hero ───────────────── -->
   <section class="hero">
     <div class="hero-bg" aria-hidden="true">
-      <div class="matrix"></div>
+      <canvas class="matrix"></canvas>
       <div class="glow"></div>
+      <div class="glow-core"></div>
     </div>
 
     <div class="hero-inner">
@@ -103,3 +104,89 @@ const features = [
     <a href="#" class="btn btn-lg">Coming to the App Store</a>
   </section>
 </BaseLayout>
+
+<script>
+  // Endless Flow matrix — a dot grid with a sine wave rippling out from the centre.
+  // Paused on Reduce Motion and when the tab is hidden (battery), like the app.
+  const canvas = document.querySelector('canvas.matrix');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const GAP = 28;
+    const RGB = '89, 91, 205';
+    let w = 0, h = 0, dots = [], raf = 0, startT = 0, rz;
+
+    function build() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = rect.width;
+      h = rect.height;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = `rgb(${RGB})`;
+      dots = [];
+      for (let y = GAP / 2; y < h; y += GAP) {
+        for (let x = GAP / 2; x < w; x += GAP) dots.push([x, y]);
+      }
+    }
+
+    function drawStatic() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalAlpha = 0.16;
+      for (let i = 0; i < dots.length; i++) {
+        ctx.beginPath();
+        ctx.arc(dots[i][0], dots[i][1], 1.4, 0, 6.2832);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function draw(time) {
+      const cx = w / 2;
+      const cy = h * 0.42;
+      ctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < dots.length; i++) {
+        const x = dots[i][0];
+        const y = dots[i][1];
+        const dx = x - cx;
+        const dy = y - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const m = (Math.sin(dist * 0.021 - time * 1.7) + 1) / 2;
+        ctx.globalAlpha = 0.05 + m * 0.22;
+        ctx.beginPath();
+        ctx.arc(x, y, 0.8 + m * 1.8, 0, 6.2832);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    function loop(t) {
+      if (!startT) startT = t;
+      draw((t - startT) / 1000);
+      raf = requestAnimationFrame(loop);
+    }
+    function play() {
+      if (!raf) raf = requestAnimationFrame(loop);
+    }
+    function pause() {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    }
+
+    build();
+    if (reduce) {
+      drawStatic();
+    } else {
+      play();
+      document.addEventListener('visibilitychange', () => (document.hidden ? pause() : play()));
+    }
+    window.addEventListener('resize', () => {
+      clearTimeout(rz);
+      rz = setTimeout(() => {
+        build();
+        if (reduce) drawStatic();
+      }, 150);
+    });
+  }
+</script>
