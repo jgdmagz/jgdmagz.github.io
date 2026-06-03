@@ -10,11 +10,16 @@
       <stop offset="1" stop-color="#000000" stop-opacity="0.10"/>
     </linearGradient>
   </defs>
-  <circle cx="50" cy="50" r="50" fill="url(#coin)"/>
-  <circle cx="50" cy="50" r="49.4" fill="none" stroke="url(#rim)" stroke-width="1.2"/>
-  <g fill="none" stroke="#FFFFFF" stroke-width="8.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M20 33.5 Q35 23.1 50 33.5 Q65 43.9 80 33.5" opacity="0.96"/>
-    <path d="M15.5 50 Q32.75 39.6 50 50 Q67.25 60.4 84.5 50" opacity="1"/>
-    <path d="M20 66.5 Q35 56.1 50 66.5 Q65 76.9 80 66.5" opacity="0.96"/>
+  <!-- white tile -->
+  <rect x="3" y="3" width="94" height="94" rx="22" fill="#FFFFFF"/>
+  <!-- coin centered in the tile -->
+  <g transform="translate(20 20) scale(0.60)">
+    <circle cx="50" cy="50" r="50" fill="url(#coin)"/>
+    <circle cx="50" cy="50" r="49.4" fill="none" stroke="url(#rim)" stroke-width="1.2"/>
+    <g fill="none" stroke="#FFFFFF" stroke-width="8.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 33.5 Q35 23.1 50 33.5 Q65 43.9 80 33.5" opacity="0.96"/>
+      <path d="M15.5 50 Q32.75 39.6 50 50 Q67.25 60.4 84.5 50" opacity="1"/>
+      <path d="M20 66.5 Q35 56.1 50 66.5 Q65 76.9 80 66.5" opacity="0.96"/>
+    </g>
   </g>
 </svg>

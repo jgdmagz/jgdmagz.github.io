@@ -1,16 +1,17 @@
 ---
-// StudentFlow brand mark — the FlowLogo "coin": an indigo gradient circle with
-// a soft rim, carrying three white "water" waves (middle wave widest).
+// StudentFlow app icon — the official mark: a white squircle tile carrying the
+// FlowLogo coin (indigo gradient circle + soft rim + three white "water" waves),
+// with a soft tile shadow and an indigo coin shadow.
 //
-// Ported 1:1 from FlowLogo / FlowMark in the app's FlowDesign.swift (the brand
-// source of truth) so the web mark matches the app and the app icon exactly:
-//   • coin gradient: #8F90ED → #595BCD → #4D4EBE, top-left → bottom-right
-//   • rim: white 0.35 (top) → black 0.10 (bottom), 1.2% width
-//   • waves: 3 in-phase sine rows at y = 0.335 / 0.50 / 0.665, amp 5.2%,
-//     stroke 8.2%, round caps; outer two at 0.96 opacity
+// Coin geometry ported 1:1 from FlowLogo / FlowMark in the app's FlowDesign.swift
+// (gradient #8F90ED → #595BCD → #4D4EBE; rim white 0.35 → black 0.10; three
+// in-phase sine waves, middle widest). The coin is scaled to ~58% and centered
+// in the tile to match the rendered app icon.
 const { size = 32, gradId = "flow" } = Astro.props;
 const coinId = `${gradId}-coin`;
 const rimId = `${gradId}-rim`;
+const tileShadow = `${gradId}-ts`;
+const coinShadow = `${gradId}-cs`;
 ---
 <svg
   width={size}
@@ -30,23 +31,33 @@ const rimId = `${gradId}-rim`;
       <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.35" />
       <stop offset="1" stop-color="#000000" stop-opacity="0.10" />
     </linearGradient>
+    <filter id={tileShadow} x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="1.8" stdDeviation="3" flood-color="#2A2A45" flood-opacity="0.16" />
+    </filter>
+    <filter id={coinShadow} x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.4" flood-color="#3F3FB4" flood-opacity="0.32" />
+    </filter>
   </defs>
 
-  <!-- coin -->
-  <circle cx="50" cy="50" r="50" fill={`url(#${coinId})`} />
-  <!-- soft rim: lighter at top, darker at bottom -->
-  <circle cx="50" cy="50" r="49.4" fill="none" stroke={`url(#${rimId})`} stroke-width="1.2" />
+  <!-- white app-icon tile (squircle) -->
+  <rect x="4" y="4" width="92" height="92" rx="21" fill="#FFFFFF" filter={`url(#${tileShadow})`} />
 
-  <!-- three white waves (middle widest) -->
-  <g
-    fill="none"
-    stroke="#FFFFFF"
-    stroke-width="8.2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path d="M20 33.5 Q35 23.1 50 33.5 Q65 43.9 80 33.5" opacity="0.96" />
-    <path d="M15.5 50 Q32.75 39.6 50 50 Q67.25 60.4 84.5 50" opacity="1" />
-    <path d="M20 66.5 Q35 56.1 50 66.5 Q65 76.9 80 66.5" opacity="0.96" />
+  <!-- coin, scaled & centered into the tile, with its own soft shadow -->
+  <g filter={`url(#${coinShadow})`}>
+    <g transform="translate(21 21) scale(0.58)">
+      <circle cx="50" cy="50" r="50" fill={`url(#${coinId})`} />
+      <circle cx="50" cy="50" r="49.4" fill="none" stroke={`url(#${rimId})`} stroke-width="1.2" />
+      <g
+        fill="none"
+        stroke="#FFFFFF"
+        stroke-width="8.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M20 33.5 Q35 23.1 50 33.5 Q65 43.9 80 33.5" opacity="0.96" />
+        <path d="M15.5 50 Q32.75 39.6 50 50 Q67.25 60.4 84.5 50" opacity="1" />
+        <path d="M20 66.5 Q35 56.1 50 66.5 Q65 76.9 80 66.5" opacity="0.96" />
+      </g>
+    </g>
   </g>
 </svg>
