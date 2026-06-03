@@ -28,7 +28,18 @@ const {
         <FlowMark size={30} gradId="fgNav" />
         <span>StudentFlow</span>
       </a>
-      <nav class="nav-links">
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links" id="nav-menu">
         <a href="/#features">Features</a>
         <a href="/blog">Blog</a>
         <a href="/#get" class="btn btn-sm">Get the app</a>
@@ -46,5 +57,23 @@ const {
       </div>
       <p>© 2026 StudentFlow. Made for students, in flow.</p>
     </footer>
+
+    <script>
+      // Mobile nav toggle — progressive enhancement; the site is fully usable without JS.
+      const navToggle = document.querySelector('.nav-toggle');
+      const navMenu = document.getElementById('nav-menu');
+      if (navToggle && navMenu) {
+        const setOpen = (open) => {
+          navMenu.classList.toggle('open', open);
+          navToggle.classList.toggle('is-open', open);
+          navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        };
+        navToggle.addEventListener('click', () => setOpen(!navMenu.classList.contains('open')));
+        navMenu.querySelectorAll('a').forEach((link) =>
+          link.addEventListener('click', () => setOpen(false))
+        );
+      }
+    </script>
   </body>
 </html>
