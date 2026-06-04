@@ -10,14 +10,14 @@ hello!
     as the app is still in beta, expect some bugs and some inconsistencies in the app. i will try my best to ship you a polished, well designed app.
      thank you for taking interest in my creation of helping students as I'm a solely student myself in needing to organize my academic needs as to what this app features. i hope you find this app a useful tool and help you to achieve your academic goals.
      
- <p style="text-align: right;"> <br> see you on my post!</p>
+ <p style="text-align: right;"> <br> see you on my next post!</p>
  <p style="text-align: right;"> Joey </p>
 
 ## Beta 1.0.0
 
 this first beta features some major updates and bug fixes including  
 
-- A new sketch theme
+- A new sketch theme/
 - An improved calendar tab
 
 ## What's Coming next?
