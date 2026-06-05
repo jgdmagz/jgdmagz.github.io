@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy Policy — StudentFlow"
+  description="What StudentFlow collects, what it doesn't, and how to reach us. No tracking, no analytics, no ads."
+>
+  <article class="post">
+    <a class="back" href="/">← Back to StudentFlow</a>
+    <h1>Privacy Policy</h1>
+    <p class="date">Effective June 5, 2026</p>
+
+    <div class="prose">
+      <h2>The short version</h2>
+      <ul>
+        <li>No tracking. No analytics. No ads.</li>
+        <li>Your study data (courses, assignments, grades, sessions) lives on your device.</li>
+        <li>Sign in with Apple is optional. We only see what Apple gives us to identify your account.</li>
+        <li>Tips go through Apple. We never see your payment info.</li>
+      </ul>
+
+      <h2>Who we are</h2>
+      <p>
+        StudentFlow is an iOS app and companion web sign-in at
+        <a href="https://studentflowapp.com">studentflowapp.com</a>, made by
+        Joey Maglalang. For any privacy question, email
+        <a href="mailto:joeymaglalang91@gmail.com">joeymaglalang91@gmail.com</a>.
+      </p>
+
+      <h2>What we collect, and why</h2>
+
+      <h3>1. Apple sign-in (optional)</h3>
+      <p>
+        If you choose to sign in with your Apple ID, Apple gives StudentFlow a
+        stable user identifier and — on your first sign-in only — the name and
+        email you choose to share. (That email can be Apple's private relay
+        address; we can't see your real one if you pick that option.)
+      </p>
+      <p>
+        That identifier is stored in our authentication backend
+        (<a href="https://supabase.com">Supabase</a>) so the same account works
+        in the app and on the web. We use it only to keep you signed in. We do
+        not currently sync any study data to our servers — sign-in is
+        identity-only.
+      </p>
+
+      <h3>2. Canvas calendar feed (you provide)</h3>
+      <p>
+        If you connect Canvas, you paste your personal Canvas calendar (ICS)
+        URL into StudentFlow. That URL is stored on your device only.
+        StudentFlow fetches the feed directly from Canvas to display your
+        events — the URL never reaches our servers.
+      </p>
+
+      <h3>3. Claude API key (you provide)</h3>
+      <p>
+        AI features are coming soon. If you enter a Claude API key for them,
+        it is stored on your device only. When AI features ship, requests will
+        go directly from your device to Anthropic's API — we don't see your
+        key or your prompts.
+      </p>
+
+      <h3>4. Tips (StoreKit)</h3>
+      <p>
+        Tips are processed entirely by Apple via StoreKit. StudentFlow receives
+        a transaction receipt — never your name, billing address, or payment
+        details.
+      </p>
+
+      <h3>5. Crash reports</h3>
+      <p>
+        If you have "Share with App Developers" enabled in your iOS Privacy &
+        Security settings, Apple may share anonymized crash reports with us
+        through App Store Connect. These reports contain no personal
+        information.
+      </p>
+
+      <h2>What we don't collect</h2>
+      <ul>
+        <li>We do not track you across other apps or websites.</li>
+        <li>We do not collect analytics, advertising IDs, or usage metrics.</li>
+        <li>We do not access your contacts, photos, microphone, camera, or location.</li>
+        <li>We do not sell any data — there is no data to sell.</li>
+      </ul>
+
+      <h2>Where your data lives</h2>
+      <ul>
+        <li>
+          <strong>On your device.</strong> Courses, assignments, GPA, timer
+          sessions, settings, your Canvas URL, and your Claude key all live in
+          iOS-managed storage on your device.
+        </li>
+        <li>
+          <strong>Supabase (sign-in only).</strong> The Apple-provided
+          identifier and email associated with your StudentFlow account live
+          in our Supabase project, used only to keep you signed in.
+        </li>
+        <li>
+          <strong>Apple.</strong> Transaction receipts for tips are handled by
+          Apple under their own privacy policy.
+        </li>
+      </ul>
+
+      <h2>Your choices</h2>
+      <ul>
+        <li>You can use StudentFlow without signing in. Sign-in is optional.</li>
+        <li>
+          To delete your StudentFlow account (and the identity record we hold
+          in Supabase), email
+          <a href="mailto:joeymaglalang91@gmail.com">joeymaglalang91@gmail.com</a>
+          and we'll remove it within 30 days.
+        </li>
+        <li>To remove study data from your device, uninstall the app.</li>
+      </ul>
+
+      <h2>Children</h2>
+      <p>
+        StudentFlow is not directed at children under 13. If you are under 13,
+        please don't create an account.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If we make material changes to this policy, we'll update the date at
+        the top and — if you have an account — note it on your next sign-in.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        <a href="mailto:joeymaglalang91@gmail.com">joeymaglalang91@gmail.com</a>
+      </p>
+    </div>
+  </article>
+</BaseLayout>
