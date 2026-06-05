@@ -75,6 +75,27 @@ const {
           link.addEventListener('click', () => setOpen(false))
         );
       }
+
+      // Scroll-reveal — fade/rise elements tagged .reveal as they enter view.
+      // Honors Reduce Motion (shows everything immediately, no animation).
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reveals = document.querySelectorAll('.reveal');
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        reveals.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-visible');
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+        );
+        reveals.forEach((el) => io.observe(el));
+      }
     </script>
   </body>
 </html>

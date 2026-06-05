@@ -77,15 +77,15 @@ const features = [
 
   <!-- ───────────────── Features ───────────────── -->
   <section class="section" id="features">
-    <h2 class="section-title">Everything school, in one calm place</h2>
-    <p class="section-sub">
+    <h2 class="section-title reveal">Everything school, in one calm place</h2>
+    <p class="section-sub reveal" style="--reveal-delay: 0.08s">
       No more juggling tabs, sticky notes, and half-finished spreadsheets. Just your studies, organized.
     </p>
 
     <div class="features">
       {
-        features.map((f) => (
-          <article class="card" style={`--card-accent:${f.color}`}>
+        features.map((f, i) => (
+          <article class="card reveal reveal-scale" style={`--card-accent:${f.color}; --reveal-delay:${i * 0.07}s`}>
             {f.soon && <span class="pill">Soon</span>}
             <div class="card-dot" />
             <h3>{f.title}</h3>
@@ -97,7 +97,7 @@ const features = [
   </section>
 
   <!-- ───────────────── Closing CTA ───────────────── -->
-  <section class="section cta-band">
+  <section class="section cta-band reveal reveal-scale">
     <h2>Find your flow this semester.</h2>
     <p>Be the first to know when StudentFlow lands — and follow along as we build it.</p>
     <!-- TODO: replace "#" with your App Store link once the app is live -->
@@ -188,5 +188,24 @@ const features = [
         if (reduce) drawStatic();
       }, 150);
     });
+  }
+
+  // Hero background parallax — the glow + matrix drift slower than the page,
+  // giving a subtle sense of depth. Skipped under Reduce Motion.
+  const heroBg = document.querySelector('.hero-bg');
+  if (heroBg && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let pTick = false;
+    addEventListener(
+      'scroll',
+      () => {
+        if (pTick) return;
+        pTick = true;
+        requestAnimationFrame(() => {
+          heroBg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
+          pTick = false;
+        });
+      },
+      { passive: true }
+    );
   }
 </script>
