@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Sign in · StudentFlow"
+  description="Sign in to StudentFlow with your Apple ID — the same account works in the app and on the web."
+>
+  <section class="login">
+    <h1>Sign in</h1>
+    <p class="sub">Use your Apple ID — the same account works in the app and here.</p>
+
+    <div id="signed-out">
+      <button id="apple" class="btn"> Sign in with Apple</button>
+    </div>
+
+    <div id="signed-in" hidden>
+      <p class="who-line">Signed in as <strong id="who"></strong></p>
+      <button id="signout" class="btn btn-ghost">Sign out</button>
+    </div>
+
+    <p id="status" class="status" hidden></p>
+  </section>
+
+  <!--
+    is:inline keeps Astro from bundling this so the browser loads supabase-js
+    straight from the CDN (no npm install needed). The anon key is public by
+    design — real access is gated by Supabase Row-Level-Security, not this key.
+  -->
+  <script is:inline type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const supabase = createClient(
+      'https://jatxquhxqxrnjbmjoqna.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphdHhxdWh4cXhybmpibWpvcW5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTAyMTksImV4cCI6MjA5NjE4NjIxOX0.cx2qMXzadunoJtq82FT-UYAstFZ_ym3FAnIpHkzgzdM'
+    );
+
+    const $ = (id) => document.getElementById(id);
+
+    async function render() {
+      const { data: { session } } = await supabase.auth.getSession();
+      const signedIn = !!session;
+      $('signed-out').hidden = signedIn;
+      $('signed-in').hidden = !signedIn;
+      if (signedIn) $('who').textContent = session.user.email ?? session.user.id;
+    }
+
+    $('apple').addEventListener('click', async () => {
+      $('status').hidden = true;
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'apple',
+        options: { redirectTo: window.location.origin + window.location.pathname },
+      });
+      if (error) {
+        $('status').hidden = false;
+        $('status').textContent = error.message;
+      }
+    });
+
+    $('signout').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      render();
+    });
+
+    // Fires after the OAuth redirect lands back here, and on sign-out.
+    supabase.auth.onAuthStateChange(() => render());
+    render();
+  </script>
+</BaseLayout>
+
+<style>
+  .login {
+    max-width: 420px;
+    margin: 14vh auto;
+    text-align: center;
+    padding: 0 1rem;
+  }
+  .login h1 {
+    margin: 0 0 0.4rem;
+  }
+  .login .sub {
+    color: var(--ink-muted, #6b7280);
+    margin-bottom: 1.75rem;
+  }
+  .login .who-line {
+    margin-bottom: 1rem;
+  }
+  .login .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--accent, #595bcd);
+    color: var(--accent, #595bcd);
+  }
+  .login .status {
+    color: var(--coral, #d65a5a);
+    margin-top: 1.25rem;
+    font-size: 0.9rem;
+  }
+</style>
