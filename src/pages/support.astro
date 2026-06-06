@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Support — StudentFlow"
+  description="Get help with StudentFlow. Common questions, troubleshooting, and how to reach the developer."
+>
+  <article class="post">
+    <a class="back" href="/">← Back to StudentFlow</a>
+    <h1>Support</h1>
+    <p class="date">StudentFlow is built by one person. I read every email.</p>
+
+    <div class="prose">
+      <h2>Contact</h2>
+      <p>
+        Email <a href="mailto:joeymaglalang91@gmail.com">joeymaglalang91@gmail.com</a>
+        with what's happening and which iPhone you're on. I usually reply within
+        a day or two.
+      </p>
+
+      <h2>Common questions</h2>
+
+      <h3>I can't sign in with Apple</h3>
+      <p>
+        Sign in with Apple is optional — StudentFlow works without it. If you
+        want an account but it's failing, try:
+      </p>
+      <ul>
+        <li>Make sure you're signed into iCloud in iOS Settings.</li>
+        <li>Toggle airplane mode off and on, then try again.</li>
+        <li>
+          If you previously hid your email with Apple's private relay and that
+          relay address is now blocking us, sign out at
+          <a href="/login">studentflowapp.com/login</a> and back in.
+        </li>
+      </ul>
+      <p>Still stuck? Email me with the error message and I'll dig in.</p>
+
+      <h3>How do I connect Canvas?</h3>
+      <p>
+        In Canvas, go to <strong>Calendar → Calendar Feed</strong> and copy the
+        ICS URL. In StudentFlow, open Settings → Canvas and paste it. The URL
+        stays on your device — StudentFlow fetches the feed directly from Canvas.
+      </p>
+
+      <h3>Where are the AI features?</h3>
+      <p>
+        Coming soon. When they ship, you'll be able to bring your own
+        Claude API key — your prompts and key never touch our servers.
+      </p>
+
+      <h3>How do tips work?</h3>
+      <p>
+        Tips are handled by Apple through StoreKit. Coffee ($1.99), Snack
+        ($4.99), and Lunch ($9.99) all do the same thing: keep StudentFlow
+        going. They don't unlock features — everything in the app is already
+        yours.
+      </p>
+
+      <h3>How do I delete my account?</h3>
+      <p>
+        To delete the identity record stored in our authentication backend,
+        email <a href="mailto:joeymaglalang91@gmail.com">joeymaglalang91@gmail.com</a>
+        from the address tied to your Apple ID and I'll remove it within 30 days.
+        To remove the app and its on-device data, uninstall it from your iPhone.
+      </p>
+
+      <h3>Is there an iPad or Mac version?</h3>
+      <p>
+        Not yet. StudentFlow is iPhone-only for now so I can keep the
+        experience tight on one device. iPad and Mac are on the roadmap.
+      </p>
+
+      <h3>Privacy</h3>
+      <p>
+        See the <a href="/privacy">privacy policy</a>. The short version: no
+        tracking, no analytics, no ads, your study data lives on your device.
+      </p>
+
+      <h2>Bug reports &amp; feedback</h2>
+      <p>
+        If something's broken or you have a feature request, email
+        <a href="mailto:joeymaglalang91@gmail.com">joeymaglalang91@gmail.com</a>.
+        Screenshots and the iOS version (Settings → General → About) help me
+        reproduce things fast.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
