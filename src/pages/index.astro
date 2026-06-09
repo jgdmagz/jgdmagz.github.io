@@ -1,52 +1,74 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FlowMark from '../components/FlowMark.astro';
+import '../styles/home.css';
+
+const TESTFLIGHT = 'https://testflight.apple.com/join/wjhfuk5M';
+
+// Feature-card glyphs — inlined (no JS needed) so the cards render even
+// without scripts. On-brand line icons matching the app's iconography.
+const featIcons = {
+  dash: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+  chart: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>',
+  check: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
+  bolt: '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg>',
+  cal: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+};
 
 const features = [
+  { title: 'Academic dashboard', body: 'Every course, grade, and deadline at a glance — organized by term.', color: 'var(--accent)', icon: featIcons.dash },
+  { title: 'GPA tracking', body: 'Always know exactly where you stand, course by course.', color: 'var(--mint)', icon: featIcons.chart },
+  { title: 'Assignments & study', body: 'Turn your to-dos into focused, satisfying study sessions.', color: 'var(--amber)', icon: featIcons.check },
+  { title: 'Living Flow design', body: 'A calm, mesmerizing interface that makes studying feel good.', color: 'var(--lavender)', icon: featIcons.bolt },
+  { title: 'GPA calculator & degree progress', body: 'Plan the grades you need and watch your degree fill in.', color: 'var(--coral)', icon: featIcons.chart, soon: true },
+  { title: 'Canvas sync', body: 'Bring your Canvas courses and assignments in automatically.', color: 'var(--accent-deep)', icon: featIcons.cal, soon: true },
+];
+
+const faqs = [
   {
-    title: 'Academic dashboard',
-    body: 'Every course, grade, and deadline at a glance — organized by term.',
-    color: 'var(--accent)',
-    soon: false,
+    q: 'How do I join the beta?',
+    a: "Open the TestFlight invite link on your iPhone, install Apple's free TestFlight app if you don't have it, then tap Install next to StudentFlow. The full steps are right above.",
+    open: true,
   },
   {
-    title: 'GPA tracking',
-    body: 'Always know exactly where you stand, course by course.',
-    color: 'var(--mint)',
-    soon: false,
+    q: 'How much does it cost?',
+    a: 'The beta is free. The core dashboard, GPA tracking, and assignment tools stay free to start — StudentFlow Plus will add Canvas sync, GPA goals, and degree planning for power users.',
   },
   {
-    title: 'Assignments & study',
-    body: 'Turn your to-dos into focused, satisfying study sessions.',
-    color: 'var(--amber)',
-    soon: false,
+    q: "Will it sync with my school's Canvas?",
+    a: "Canvas sync is on the way — it'll pull your courses and assignments in automatically, so you never have to enter a deadline by hand.",
   },
   {
-    title: 'Living Flow design',
-    body: 'A calm, mesmerizing interface that makes studying feel good.',
-    color: 'var(--lavender)',
-    soon: false,
+    q: 'Is my academic data private?',
+    a: "Yes. Your courses and grades stay yours. We don't sell your data, and you can explore the app without even creating an account.",
   },
   {
-    title: 'GPA calculator & degree progress',
-    body: 'Plan the grades you need and watch your degree fill in.',
-    color: 'var(--coral)',
-    soon: true,
-  },
-  {
-    title: 'Canvas sync',
-    body: 'Bring your Canvas courses and assignments in automatically.',
-    color: 'var(--accent-deep)',
-    soon: true,
+    q: 'Which platforms will it support?',
+    a: 'StudentFlow launches on iOS first, designed to feel right at home on iPhone. More platforms are on the roadmap.',
   },
 ];
+
+// TestFlight propeller glyph (approximation) for the install visuals.
+const testflightGlyph = '<svg width="30" height="30" viewBox="0 0 48 48" fill="#fff" aria-hidden="true"><g transform="translate(24 25)"><g><ellipse cx="0" cy="-11" rx="4.6" ry="8.4"/><ellipse cx="0" cy="-11" rx="4.6" ry="8.4" transform="rotate(120)"/><ellipse cx="0" cy="-11" rx="4.6" ry="8.4" transform="rotate(240)"/><circle cx="0" cy="0" r="3.6" fill="#1aa7d8"/></g></g></svg>';
+const globeGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
+const arrowGlyph = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/></svg>';
 ---
 
 <BaseLayout
   title="StudentFlow — Your semester, in flow"
-  description="StudentFlow brings your courses, assignments, and GPA into one calm, beautiful place — so you can focus on the work, not the chaos."
+  description="StudentFlow brings your courses, assignments, and GPA into one calm, beautiful place — so you can focus on the work, not the chaos. Now in beta on TestFlight."
 >
-  <!-- ───────────────── Hero ───────────────── -->
+  <!-- Sketch theme showcase uses Shantell Sans (the app's handwriting font) -->
+  <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
+  <link slot="head" rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    slot="head"
+    href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- ═══════════════ HERO — split, product-led ═══════════════ -->
   <section class="hero">
     <div class="hero-bg" aria-hidden="true">
       <canvas class="matrix"></canvas>
@@ -55,39 +77,53 @@ const features = [
     </div>
 
     <div class="hero-inner">
-      <div class="hero-mark"><FlowMark size={78} gradId="fgHero" /></div>
-      <h1>Your semester,<br /><span class="grad-text">in flow.</span></h1>
-      <p class="lede">
-        StudentFlow brings your courses, assignments, and GPA into one calm, beautiful place —
-        so you can focus on the work, not the chaos.
-      </p>
-
-      <div class="cta" id="get">
-        <!-- TODO: replace "#" with your App Store link once the app is live -->
-        <a href="#" class="btn btn-lg">Coming to the App Store</a>
-        <a href="/blog" class="btn btn-ghost btn-lg">Read the latest →</a>
+      <div class="hero-copy">
+        <span class="eyebrow anim-up" style="--d: 0s"><span class="dot"></span> Now in beta · iOS</span>
+        <h1 class="anim-up" style="--d: 0.06s">Your semester,<br /><span class="grad-text">in flow.</span></h1>
+        <p class="lede anim-up" style="--d: 0.12s">
+          Every course, grade, and deadline in one calm place. StudentFlow turns the
+          chaos of school into a single, beautiful view — so you always know what's next.
+        </p>
+        <div class="hero-cta anim-up" style="--d: 0.18s">
+          <a href={TESTFLIGHT} target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+            Join the beta on TestFlight
+          </a>
+          <a href="#install" class="btn btn-ghost btn-lg">How to install →</a>
+        </div>
+        <div class="cta-note anim-up" style="--d: 0.24s">
+          <Fragment set:html={checkGlyph} />
+          Free to start · No account needed to look around
+        </div>
       </div>
 
-      <!-- TODO: drop your hero video / app screenshot in here when it's ready -->
-      <div class="hero-media" aria-hidden="true">
-        <div class="media-placeholder">App preview coming soon</div>
+      <div class="mockup-wrap anim-up" style="--d: 0.2s">
+        <div class="phone-cluster cluster-b">
+          <div class="phone phone-back">
+            <div class="phone-screen" data-vec="endless"></div>
+          </div>
+          <div class="phone phone-front">
+            <div class="phone-screen" data-vec="home,calendar,regular,break"></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ───────────────── Features ───────────────── -->
+  <!-- ═══════════════ Features ═══════════════ -->
   <section class="section" id="features">
-    <h2 class="section-title reveal">Everything school, in one calm place</h2>
-    <p class="section-sub reveal" style="--reveal-delay: 0.08s">
-      No more juggling tabs, sticky notes, and half-finished spreadsheets. Just your studies, organized.
-    </p>
-
+    <div class="section-head">
+      <span class="eyebrow reveal"><span class="dot"></span> Built for the way you study</span>
+      <h2 class="section-title reveal" style="--reveal-delay: 0.05s">Everything school, in one calm place</h2>
+      <p class="section-sub reveal" style="--reveal-delay: 0.1s">
+        No more juggling tabs, sticky notes, and half-finished spreadsheets. Just your studies, organized.
+      </p>
+    </div>
     <div class="features">
       {
         features.map((f, i) => (
-          <article class="card reveal reveal-scale" style={`--card-accent:${f.color}; --reveal-delay:${i * 0.07}s`}>
+          <article class="card reveal reveal-scale" style={`--card-accent: ${f.color}; --reveal-delay: ${(i % 3) * 0.07}s`}>
             {f.soon && <span class="pill">Soon</span>}
-            <div class="card-dot" />
+            <div class="card-ico" set:html={f.icon} />
             <h3>{f.title}</h3>
             <p>{f.body}</p>
           </article>
@@ -96,116 +132,584 @@ const features = [
     </div>
   </section>
 
-  <!-- ───────────────── Closing CTA ───────────────── -->
-  <section class="section cta-band reveal reveal-scale">
-    <h2>Find your flow this semester.</h2>
-    <p>Be the first to know when StudentFlow lands — and follow along as we build it.</p>
-    <!-- TODO: replace "#" with your App Store link once the app is live -->
-    <a href="#" class="btn btn-lg">Coming to the App Store</a>
+  <!-- ═══════════════ Themes (Living Flow vs Sketch) ═══════════════ -->
+  <section class="section" id="themes">
+    <div class="section-head">
+      <span class="eyebrow reveal"><span class="dot"></span> Two themes, one flow</span>
+      <h2 class="section-title reveal" style="--reveal-delay: 0.05s">Make it yours</h2>
+      <p class="section-sub reveal" style="--reveal-delay: 0.1s">
+        Study in calm, glassy <strong>Living Flow</strong> — or cozy, hand-drawn <strong>Sketch</strong>.
+        Switch anytime in the app. Drag to compare.
+      </p>
+    </div>
+
+    <div class="theme-compare reveal" style="--reveal-delay: 0.05s" data-theme-compare>
+      <div class="phone phone-compare">
+        <div class="phone-screen">
+          <div class="tc-pane tc-flow theme-flow" data-theme-home>
+            <span class="tc-tag flow">Living Flow</span>
+          </div>
+          <div class="tc-pane tc-sketch theme-sketch" data-theme-home>
+            <span class="tc-tag sketch">Sketch</span>
+          </div>
+          <div
+            class="tc-handle"
+            data-tc-handle
+            role="slider"
+            tabindex="0"
+            aria-label="Drag to compare the Living Flow and Sketch themes"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="50"
+          >
+            <span class="tc-grip">
+              <svg width="9" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+              <svg width="9" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+      <p class="tc-hint">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7 3 12l5 5M16 7l5 5-5 5M3 12h18" /></svg>
+        Drag to compare the two themes
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════ Install (TestFlight beta) ═══════════════ -->
+  <section class="section" id="install">
+    <div class="section-head">
+      <span class="eyebrow reveal"><span class="dot"></span> Now in beta</span>
+      <h2 class="section-title reveal" style="--reveal-delay: 0.05s">Get StudentFlow on your iPhone</h2>
+      <p class="section-sub reveal" style="--reveal-delay: 0.1s">
+        The beta runs through Apple's TestFlight. It takes about a minute — here's the whole thing.
+      </p>
+    </div>
+
+    <ol class="install-steps reveal" style="--reveal-delay: 0.05s">
+      <li class="install-step">
+        <span class="install-num">1</span>
+        <div class="install-visual">
+          <span class="iv-link">
+            <span class="iv-globe"><Fragment set:html={globeGlyph} /></span>
+            <span class="iv-url">testflight.apple.com/join/…</span>
+          </span>
+          <span class="iv-tap" aria-hidden="true"></span>
+        </div>
+        <h3>Open the invite</h3>
+        <p>On your iPhone, tap <a class="lnk" href={TESTFLIGHT} target="_blank" rel="noopener">the beta invite link</a>. It opens straight in TestFlight.</p>
+      </li>
+
+      <li class="install-step">
+        <span class="install-num">2</span>
+        <div class="install-visual">
+          <span class="iv-pair">
+            <span class="mini-tile testflight"><Fragment set:html={testflightGlyph} /></span>
+            <span class="iv-arrow"><Fragment set:html={arrowGlyph} /></span>
+            <span class="iv-get">Get</span>
+          </span>
+        </div>
+        <h3>Get TestFlight (free)</h3>
+        <p>First time? The App Store offers Apple's free TestFlight app. Install it, then reopen the invite.</p>
+      </li>
+
+      <li class="install-step">
+        <span class="install-num">3</span>
+        <div class="install-visual">
+          <span class="iv-card">
+            <span class="iv-app"><FlowMark size={34} gradId="fgStep3" /></span>
+            <span class="iv-meta"><b>StudentFlow</b><span>Ready to install</span></span>
+            <span class="iv-install">INSTALL</span>
+          </span>
+        </div>
+        <h3>Tap Install</h3>
+        <p>In TestFlight, tap <strong>Install</strong> next to StudentFlow. It downloads just like any app.</p>
+      </li>
+
+      <li class="install-step">
+        <span class="install-num">4</span>
+        <div class="install-visual">
+          <span class="iv-open">
+            <span class="iv-halo" aria-hidden="true"></span>
+            <FlowMark size={56} gradId="fgStep4" />
+          </span>
+        </div>
+        <h3>Open &amp; start flowing</h3>
+        <p>Find StudentFlow on your Home Screen, open it, and your semester's in flow.</p>
+      </li>
+    </ol>
+
+    <div class="install-cta reveal">
+      <a href={TESTFLIGHT} target="_blank" rel="noopener" class="btn btn-primary btn-lg">Open the beta invite →</a>
+      <p class="install-note">Requires an iPhone on iOS 17 or later and the free TestFlight app. Beta builds update often.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FAQ ═══════════════ -->
+  <section class="section" id="faq">
+    <div class="section-head">
+      <span class="eyebrow reveal"><span class="dot"></span> Questions</span>
+      <h2 class="section-title reveal" style="--reveal-delay: 0.05s">Good to know</h2>
+      <p class="section-sub reveal" style="--reveal-delay: 0.1s">
+        Everything you might be wondering about the StudentFlow beta.
+      </p>
+    </div>
+    <div class="faq reveal" style="--reveal-delay: 0.05s">
+      {
+        faqs.map((f) => (
+          <div class={`faq-item${f.open ? ' open' : ''}`}>
+            <button class="faq-q" type="button">{f.q}<span class="faq-icon" /></button>
+            <div class="faq-a"><div class="faq-a-inner"><p>{f.a}</p></div></div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ═══════════════ Closing CTA ═══════════════ -->
+  <section class="section">
+    <div class="cta-band reveal reveal-scale">
+      <h2>Find your flow this semester.</h2>
+      <p>Join the StudentFlow beta and help shape it — your feedback steers what we build next.</p>
+      <a href={TESTFLIGHT} target="_blank" rel="noopener" class="btn btn-primary btn-lg">Join the beta on TestFlight</a>
+    </div>
   </section>
 </BaseLayout>
 
 <script>
-  // Endless Flow matrix — a dot grid with a sine wave rippling out from the centre.
-  // Paused on Reduce Motion and when the tab is hidden (battery), like the app.
-  const canvas = document.querySelector('canvas.matrix');
-  if (canvas) {
+  /* ─────────────────────────────────────────────
+     Home page — live phone showcase + motion.
+     Vector app screens (no screenshots), a dot-grid
+     ripple background, ticking focus timers, and the
+     FAQ accordion. Honors Reduce Motion throughout.
+     ───────────────────────────────────────────── */
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* on-brand line glyphs used inside the vector screens */
+  const G = {
+    chevL: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
+    chevR: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+    chevD: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+    plus: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+    spark: '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c.5 3.5 2 5 5.5 5.5C14 8 12.5 9.5 12 13c-.5-3.5-2-5-5.5-5.5C10 7 11.5 5.5 12 2Z"/><path d="M19 13c.3 1.8 1 2.5 2.8 2.8-1.8.3-2.5 1-2.8 2.7-.3-1.8-1-2.5-2.7-2.8 1.7-.2 2.4-1 2.7-2.7Z"/></svg>',
+    user: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>',
+    gear: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>',
+    flame: '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s4 4 4 8a4 4 0 0 1-8 0c0-1 .5-2 .5-2S6 11 6 14a6 6 0 0 0 12 0c0-5-6-12-6-12z"/></svg>',
+    flag: '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M5 22V3h11l-1 4h6l-1 7H8v8z"/></svg>',
+    pause: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>',
+    stop: '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="5" width="14" height="14" rx="2.5"/></svg>',
+    inf: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 7.5a4.5 4.5 0 1 0 0 9c2.5 0 4-2 5.5-4.5C13.5 9.5 15 7.5 17.5 7.5a4.5 4.5 0 1 1 0 9c-2.5 0-4-2-5.5-4.5C10.5 9.5 9 7.5 6.5 7.5Z"/></svg>',
+    clock: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    cup: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a3 3 0 0 1 0 6h-1"/><path d="M3 8h14v5a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M7 2v2M11 2v2"/></svg>',
+    home: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>',
+    cal: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+    book: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+    wind: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10a2.5 2.5 0 1 0-2.5-2.5"/><path d="M3 12h15a2.5 2.5 0 1 1-2.5 2.5"/><path d="M3 16h8a2.2 2.2 0 1 0-2.2 2.2"/></svg>',
+    wifi: '<svg width="15" height="11" viewBox="0 0 16 12" fill="currentColor"><path d="M8 9.5a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Zm0-3.4c1.3 0 2.5.5 3.4 1.4l1.1-1.2A6.6 6.6 0 0 0 8 4.3a6.6 6.6 0 0 0-4.5 1.8l1.1 1.2A4.8 4.8 0 0 1 8 6.1Zm0-3.4c2.2 0 4.3.9 5.8 2.4L15 .9A10 10 0 0 0 8 0 10 10 0 0 0 1 .9l1.2 1.2A8.2 8.2 0 0 1 8 2.7Z"/></svg>',
+  };
+
+  const statusBar = () =>
+    `<div class="flow-status-bar"><span>5:03</span><span class="sb-right">${G.wifi}<span class="sb-batt"></span></span></div>`;
+  const tabbar = (active) => {
+    const tab = (id, label, ico) =>
+      `<div class="vs-tab ${active === id ? 'active' : ''}"><span class="vs-tab-ico">${ico}</span>${label}</div>`;
+    return `<div class="vs-tabbar">${tab('home', 'Home', G.home)}${tab('cal', 'Calendar', G.cal)}${tab('courses', 'Courses', G.book)}<div class="vs-wind">${G.wind}</div></div>`;
+  };
+
+  function vsHome() {
+    return `<div class="vscreen"><div class="vs vs-home">
+      ${statusBar()}
+      <div class="vs-head">
+        <div><div class="vs-eyebrow">Sunday · May 31</div><div class="vs-title">Good evening</div></div>
+        <div class="vs-head-btns"><span class="vs-hb">${G.spark}</span><span class="vs-hb">${G.user}</span><span class="vs-hb">${G.gear}</span></div>
+      </div>
+      <div class="vs-card vs-day">
+        <div class="vs-card-top"><span class="vs-kicker">My Day</span><span class="vs-streak">${G.flame} 5 day</span></div>
+        <div class="vs-card-h">5 stops on your day.</div>
+        <div class="vs-timeline">
+          <svg class="vs-wave" viewBox="0 0 20 200" preserveAspectRatio="none" fill="none" stroke="rgba(110,112,210,0.5)" stroke-width="3" stroke-linecap="round"><path d="M10 0 Q2 28 10 56 Q18 88 10 120 Q3 154 10 180 Q14 194 10 200"/></svg>
+          <div class="vs-stop"><span class="t">1:00p</span><span class="ring" style="--c:var(--coral)"></span><b>Calculus II</b><span class="dur">1h 15m</span></div>
+          <div class="vs-free"><span></span><span class="plus">${G.plus}</span><span class="lbl">3h 45m free</span></div>
+          <div class="vs-stop"><span class="t">6:00p</span><span class="ring" style="--c:var(--accent)"></span><b>CS 101</b><span class="dur">1h 15m</span></div>
+          <div class="vs-stop"><span class="t">6:00p</span><span class="ring" style="--c:var(--accent-deep)"></span><b>Reading 1</b><span class="dur">CS 101</span></div>
+          <div class="vs-stop"><span class="t">8:00p</span><span class="ring" style="--c:var(--accent-deep)"></span><b>Reading 2</b><span class="dur">CS 101</span></div>
+        </div>
+        <div class="vs-cta">${G.spark} Explore your day</div>
+      </div>
+      <div class="vs-card vs-insight">
+        <div class="vs-card-top"><span class="vs-kicker">Focus Insight</span><span class="vs-streak" style="color:var(--accent-deep);background:rgba(89,91,205,0.12)">2h 14m today</span></div>
+        <div class="vs-bars"><i style="--h:42%"></i><i style="--h:58%"></i><i style="--h:36%"></i><i style="--h:72%"></i><i style="--h:54%"></i><i style="--h:88%"></i><i style="--h:64%"></i></div>
+      </div>
+      ${tabbar('home')}
+    </div></div>`;
+  }
+
+  function vsCalendar() {
+    const dot = (c) => `<i style="background:${c}"></i>`;
+    const date = (n, cls, dots) =>
+      `<div class="vs-date ${cls}"><span class="vs-dnum">${n}</span><span class="vs-ddots">${dots}</span></div>`;
+    const ev = (txt, time, bg, col) =>
+      `<div class="vs-ev" style="background:${bg};color:${col}">${txt}<div class="evt">${time}</div></div>`;
+    const evMap = {
+      '9 AM': [3, ev('Physics 4B', '9:00a', 'rgba(113,191,157,0.22)', '#3f9a72')],
+      '11 AM': [1, ev('CS 101', '10:30a', 'rgba(89,91,205,0.16)', '#4646b0')],
+      '1 PM': [2, ev('Calculus II', '1:00p', 'rgba(239,142,142,0.2)', '#c4595b')],
+    };
+    const hours = ['6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM'];
+    const rows = hours
+      .map((h) => {
+        const e = evMap[h];
+        let lanes = '';
+        for (let c = 1; c <= 3; c++) lanes += `<div class="lane">${e && e[0] === c ? e[1] : ''}</div>`;
+        return `<div class="hour">${h}</div>${lanes}`;
+      })
+      .join('');
+    return `<div class="vscreen"><div class="vs vs-cal">
+      ${statusBar()}
+      <div class="vs-head">
+        <div><div class="vs-eyebrow">3-Day Span</div><div class="vs-title">May 31</div></div>
+        <div class="vs-head-btns"><span class="vs-hb">${G.plus}</span></div>
+      </div>
+      <div class="vs-month"><span class="mnav">${G.chevL}</span>May 2026<span class="mnav">${G.chevR}</span><span class="mnav">${G.chevD}</span></div>
+      <div class="vs-datestrip">
+        ${date('31', 'active', dot('var(--accent)') + dot('var(--coral)'))}
+        ${date('1', '', dot('var(--mint)'))}
+        ${date('2', 'dim', dot('var(--coral)') + dot('var(--amber)'))}
+        ${date('3', 'dim', dot('var(--mint)') + dot('var(--coral)'))}
+        ${date('4', 'dim', dot('var(--accent)') + dot('var(--coral)'))}
+        ${date('5', 'dim', dot('var(--mint)') + dot('var(--coral)'))}
+        ${date('6', 'dim', '')}
+      </div>
+      <div class="vs-seg"><span>My Day</span><span class="on">3 Day</span></div>
+      <div class="vs-grid">${rows}</div>
+      ${tabbar('cal')}
+    </div></div>`;
+  }
+
+  // A focus-mode screen: minutes:seconds with a smaller centiseconds tail.
+  function flowVScreen(mode, title, icon, time, secs, status) {
+    return `<div class="vscreen flow-screen" data-flow="${mode}" data-seconds="${secs}">
+      <canvas class="flow-dots"></canvas>
+      <div class="flow-ui">
+        ${statusBar()}
+        <div class="flow-top"><span class="ft-ico">${G.chevL}</span><span class="ft-title">${title}</span><span class="ft-ico">${icon}</span></div>
+        <div class="flow-center"><div class="flow-blob"></div><div class="flow-time"><span class="mmss">${time}</span><span class="centi">.00</span></div><div class="flow-status"><i></i> ${status}</div></div>
+        <div class="flow-controls"><span class="flow-btn">${G.flag}</span><span class="flow-btn primary">${G.pause}</span><span class="flow-btn">${G.stop}</span></div>
+      </div>
+    </div>`;
+  }
+
+  const SCREENS = {
+    home: vsHome,
+    calendar: vsCalendar,
+    endless: () => flowVScreen('endless', 'Endless Flow', G.inf, '24:13', 1453, 'FLOWING'),
+    regular: () => flowVScreen('regular', 'Regular Flow', G.clock, '18:42', 1122, 'FOCUS'),
+    break: () => flowVScreen('break', 'Break Time', G.cup, '04:32', 272, 'BREAK'),
+  };
+
+  // A theme-agnostic Home screen for the comparison slider. Colours, font, and
+  // (sketch) rough borders are all driven by CSS vars on the .theme-* wrapper.
+  function themeHome() {
+    return `<div class="th-screen">
+      <div class="th-status"><span>5:03</span><span class="th-status-r">${G.wifi}<span class="th-batt"></span></span></div>
+      <div class="th-head">
+        <div><div class="th-eyebrow">Sunday · May 31</div><div class="th-title">Good evening</div></div>
+        <div class="th-hbtns"><span class="th-hb">${G.spark}</span><span class="th-hb">${G.user}</span><span class="th-hb">${G.gear}</span></div>
+      </div>
+      <div class="th-card">
+        <div class="th-card-top"><span class="th-kicker">My Day</span><span class="th-streak">${G.flame} 5 day</span></div>
+        <div class="th-card-h">5 stops on your day.</div>
+        <div class="th-timeline">
+          <svg class="th-wave" viewBox="0 0 20 200" preserveAspectRatio="none" fill="none" stroke="var(--tc-accent)" stroke-opacity="0.5" stroke-width="3" stroke-linecap="round"><path d="M10 0 Q2 28 10 56 Q18 88 10 120 Q3 154 10 180 Q14 194 10 200"/></svg>
+          <div class="th-stop"><span class="t">1:00p</span><span class="ring" style="--c:var(--tc-coral)"></span><b>Calculus II</b><span class="dur">1h 15m</span></div>
+          <div class="th-stop"><span class="t">6:00p</span><span class="ring" style="--c:var(--tc-accent)"></span><b>CS 101</b><span class="dur">1h 15m</span></div>
+          <div class="th-stop"><span class="t">8:00p</span><span class="ring" style="--c:var(--tc-mint)"></span><b>Reading 2</b><span class="dur">CS 101</span></div>
+        </div>
+        <div class="th-cta">${G.spark} Explore your day</div>
+      </div>
+      <div class="th-tabbar">
+        <div class="th-tab active"><span class="th-tab-ico">${G.home}</span>Home</div>
+        <div class="th-tab"><span class="th-tab-ico">${G.cal}</span>Calendar</div>
+        <div class="th-tab"><span class="th-tab-ico">${G.book}</span>Courses</div>
+        <div class="th-wind">${G.wind}</div>
+      </div>
+    </div>`;
+  }
+
+  // build every [data-vec="a,b,c"] slot, and mark multi-screen slots for cycling
+  document.querySelectorAll('[data-vec]').forEach((slot) => {
+    const list = slot.dataset.vec.split(',').map((s) => s.trim()).filter((s) => SCREENS[s]);
+    slot.innerHTML = list.map((name) => SCREENS[name]()).join('');
+    const first = slot.querySelector('.vscreen');
+    if (first) first.classList.add('on');
+    if (list.length > 1) slot.setAttribute('data-cycle', '');
+  });
+
+  /* crossfade an element's screens so a phone shows several states */
+  function setupCycle(screen) {
+    const items = [...screen.children].filter((c) => c.matches('.vscreen'));
+    if (items.length < 2 || reduce) return;
+    let i = 0;
+    setInterval(() => {
+      items[i].classList.remove('on');
+      i = (i + 1) % items.length;
+      items[i].classList.add('on');
+    }, 3600);
+  }
+  document.querySelectorAll('[data-cycle]').forEach(setupCycle);
+
+  /* polished inner chamfer layer for every phone */
+  document.querySelectorAll('.phone').forEach((p) => {
+    if (!p.querySelector('.phone-chamfer')) {
+      p.insertAdjacentHTML('afterbegin', '<div class="phone-chamfer"></div>');
+    }
+  });
+
+  /* ── live dot grid (ported from the app's DotGridView) ── */
+  function makeFlowDots(canvas) {
     const ctx = canvas.getContext('2d');
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const GAP = 28;
-    const RGB = '89, 91, 205';
-    let w = 0, h = 0, dots = [], raf = 0, startT = 0, rz;
+    const screen = canvas.closest('.flow-screen');
+    let w = 0, h = 0, raf = 0, startT = 0, rz;
+    const channels = () => getComputedStyle(screen).getPropertyValue('--fd').trim() || '89,91,205';
 
     function build() {
       const rect = canvas.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = rect.width;
-      h = rect.height;
+      w = rect.width; h = rect.height;
+      if (!w || !h) return;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function frame(time) {
+      if (!w) { build(); if (!w) return; }
+      const rgb = channels();
+      const spacing = Math.max(11, w * 0.05);
+      const dot = spacing * 0.2;
+      const cx = w / 2, cy = h * 0.45;
+      const maxDist = Math.hypot(w, h) * 0.5;
+      ctx.clearRect(0, 0, w, h);
+      for (let y = 0; y < h + spacing; y += spacing) {
+        for (let x = 0; x < w + spacing; x += spacing) {
+          const dist = Math.hypot(x - cx, y - cy);
+          const wave = Math.sin(dist / (maxDist * 0.16) - time * 1.8);
+          const sizeMul = 1 + wave * 0.35;
+          const fade = Math.max(0.04, 0.2 - (dist / maxDist) * 0.16) + wave * 0.04;
+          const r = (dot * sizeMul) / 2;
+          ctx.beginPath();
+          ctx.arc(x, y, Math.max(0.3, r), 0, 6.2832);
+          ctx.fillStyle = `rgba(${rgb},${Math.max(0, fade)})`;
+          ctx.fill();
+        }
+      }
+    }
+    function loop(t) { if (!startT) startT = t; frame((t - startT) / 1000); raf = requestAnimationFrame(loop); }
+    const api = {
+      play() { if (reduce) { build(); frame(0); return; } if (!raf) raf = requestAnimationFrame(loop); },
+      pause() { cancelAnimationFrame(raf); raf = 0; },
+      rebuild() { build(); if (reduce) frame(0); },
+    };
+    build();
+    window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(api.rebuild, 150); });
+    return api;
+  }
+
+  const flowDots = [...document.querySelectorAll('.flow-dots')].map((c) => makeFlowDots(c));
+
+  /* ── ticking focus timers ── */
+  const flowScreens = [...document.querySelectorAll('.flow-screen[data-seconds]')].map((s) => ({
+    base: parseInt(s.dataset.seconds, 10),
+    mmss: s.querySelector('.flow-time .mmss'),
+    centi: s.querySelector('.flow-time .centi'),
+  }));
+  const fmt = (sec) => `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
+  let flowT0 = performance.now();
+  function startFlowTimers() {
+    if (reduce || !flowScreens.length) return;
+    flowT0 = performance.now();
+    setInterval(() => {
+      const el = (performance.now() - flowT0) / 1000;
+      flowScreens.forEach((f) => {
+        if (f.mmss) f.mmss.textContent = fmt(f.base + Math.floor(el));
+      });
+    }, 1000);
+    setInterval(() => {
+      const ms = Math.floor((performance.now() % 1000) / 10);
+      const tail = '.' + String(ms).padStart(2, '0');
+      flowScreens.forEach((f) => { if (f.centi) f.centi.textContent = tail; });
+    }, 90);
+  }
+
+  /* ── dotted ripple background ── */
+  function makeMatrix(canvas) {
+    const ctx = canvas.getContext('2d');
+    const GAP = 28, RGB = '89, 91, 205';
+    let w = 0, h = 0, dots = [], raf = 0, startT = 0, rz;
+    function build() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = rect.width; h = rect.height;
+      if (!w || !h) return;
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.fillStyle = `rgb(${RGB})`;
       dots = [];
-      for (let y = GAP / 2; y < h; y += GAP) {
+      for (let y = GAP / 2; y < h; y += GAP)
         for (let x = GAP / 2; x < w; x += GAP) dots.push([x, y]);
-      }
     }
-
     function drawStatic() {
+      if (!w) return;
       ctx.clearRect(0, 0, w, h);
       ctx.globalAlpha = 0.16;
-      for (let i = 0; i < dots.length; i++) {
-        ctx.beginPath();
-        ctx.arc(dots[i][0], dots[i][1], 1.4, 0, 6.2832);
-        ctx.fill();
-      }
+      for (const d of dots) { ctx.beginPath(); ctx.arc(d[0], d[1], 1.4, 0, 6.2832); ctx.fill(); }
       ctx.globalAlpha = 1;
     }
-
     function draw(time) {
-      const cx = w / 2;
-      const cy = h * 0.42;
+      const cx = w / 2, cy = h * 0.4;
       ctx.clearRect(0, 0, w, h);
-      for (let i = 0; i < dots.length; i++) {
-        const x = dots[i][0];
-        const y = dots[i][1];
-        const dx = x - cx;
-        const dy = y - cy;
+      for (const d of dots) {
+        const dx = d[0] - cx, dy = d[1] - cy;
         const dist = Math.sqrt(dx * dx + dy * dy);
         const m = (Math.sin(dist * 0.021 - time * 1.7) + 1) / 2;
-        ctx.globalAlpha = 0.05 + m * 0.22;
-        ctx.beginPath();
-        ctx.arc(x, y, 0.8 + m * 1.8, 0, 6.2832);
-        ctx.fill();
+        ctx.globalAlpha = 0.05 + m * 0.24;
+        ctx.beginPath(); ctx.arc(d[0], d[1], 0.8 + m * 1.9, 0, 6.2832); ctx.fill();
       }
       ctx.globalAlpha = 1;
     }
-
-    function loop(t) {
-      if (!startT) startT = t;
-      draw((t - startT) / 1000);
-      raf = requestAnimationFrame(loop);
-    }
-    function play() {
-      if (!raf) raf = requestAnimationFrame(loop);
-    }
-    function pause() {
-      cancelAnimationFrame(raf);
-      raf = 0;
-    }
-
+    function loop(t) { if (!startT) startT = t; draw((t - startT) / 1000); raf = requestAnimationFrame(loop); }
+    const api = {
+      play() { if (reduce) { build(); drawStatic(); return; } if (!raf) raf = requestAnimationFrame(loop); },
+      pause() { cancelAnimationFrame(raf); raf = 0; },
+      rebuild() { build(); if (reduce) drawStatic(); },
+    };
     build();
-    if (reduce) {
-      drawStatic();
-    } else {
-      play();
-      document.addEventListener('visibilitychange', () => (document.hidden ? pause() : play()));
-    }
-    window.addEventListener('resize', () => {
-      clearTimeout(rz);
-      rz = setTimeout(() => {
-        build();
-        if (reduce) drawStatic();
-      }, 150);
-    });
+    window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(api.rebuild, 150); });
+    return api;
+  }
+  const matrix = (() => {
+    const c = document.querySelector('canvas.matrix');
+    return c ? makeMatrix(c) : null;
+  })();
+
+  /* start everything that's on-screen */
+  if (matrix) matrix.play();
+  flowDots.forEach((f) => f.play());
+  startFlowTimers();
+
+  document.addEventListener('visibilitychange', () => {
+    const act = document.hidden ? 'pause' : 'play';
+    if (matrix) matrix[act]();
+    flowDots.forEach((f) => f[act]());
+  });
+
+  /* hero entrance — only arm once the timeline is confirmed advancing */
+  if (!reduce) {
+    requestAnimationFrame((t1) =>
+      requestAnimationFrame((t2) => {
+        if (t2 > t1) document.body.classList.add('anims-ready');
+      })
+    );
   }
 
-  // Hero background parallax — the glow + matrix drift slower than the page,
-  // giving a subtle sense of depth. Skipped under Reduce Motion.
-  const heroBg = document.querySelector('.hero-bg');
-  if (heroBg && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    let pTick = false;
-    addEventListener(
-      'scroll',
-      () => {
-        if (pTick) return;
-        pTick = true;
-        requestAnimationFrame(() => {
-          heroBg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
-          pTick = false;
+  /* hero background parallax */
+  if (!reduce) {
+    let ticking = false;
+    addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.hero-bg').forEach((bg) => {
+          bg.style.transform = `translateY(${window.scrollY * 0.22}px)`;
         });
-      },
-      { passive: true }
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+
+  /* FAQ accordion */
+  document.querySelectorAll('.faq-q').forEach((q) => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach((o) => o.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  /* Theme comparison slider — drag the handle to wipe between Living Flow & Sketch */
+  const tc = document.querySelector('[data-theme-compare]');
+  if (tc) {
+    tc.querySelectorAll('[data-theme-home]').forEach((host) =>
+      host.insertAdjacentHTML('beforeend', themeHome())
     );
+
+    /* Sketch theme: draw hand-drawn "rough ink" borders (seeded, like the app's
+       RoughBorder) as inline SVG — no filters, so it's crisp everywhere. */
+    const sketchPane = tc.querySelector('.tc-sketch');
+    const xorshift = (seed) => {
+      let s = seed >>> 0 || 1;
+      return () => { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; return (s >>> 0) / 4294967296; };
+    };
+    function buildRoughBorders() {
+      if (!sketchPane) return;
+      const els = sketchPane.querySelectorAll('.th-card, .th-hb, .th-tabbar, .th-cta, .th-streak, .th-wind');
+      els.forEach((el, i) => {
+        el.querySelectorAll(':scope > .th-stroke').forEach((n) => n.remove());
+        const w = el.clientWidth, h = el.clientHeight;
+        if (!w || !h) return;
+        const cr = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 12;
+        const r = Math.min(cr, w / 2, h / 2);
+        const rnd = xorshift(9173 + i * 131);
+        const amp = Math.min(2.2, Math.max(0.9, h * 0.016));
+        const m = 1.6, x0 = m, y0 = m, x1 = w - m, y1 = h - m;
+        const pass = (a) => {
+          const j = () => ((rnd() * 2 - 1) * a).toFixed(1);
+          const P = (x, y) => `${(x).toFixed(1)},${(y).toFixed(1)}`;
+          return `M${P(x0 + r, y0)} `
+            + `L${x1 - r + +j()},${y0 + +j()} Q${x1},${y0} ${x1},${y0 + r} `
+            + `L${x1 + +j()},${y1 - r + +j()} Q${x1},${y1} ${x1 - r},${y1} `
+            + `L${x0 + r + +j()},${y1 + +j()} Q${x0},${y1} ${x0},${y1 - r} `
+            + `L${x0 + +j()},${y0 + r + +j()} Q${x0},${y0} ${x0 + r},${y0} Z`;
+        };
+        const svg =
+          `<svg class="th-stroke" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">` +
+          `<path d="${pass(amp)}"/><path d="${pass(amp * 0.65)}" opacity="0.5"/></svg>`;
+        el.insertAdjacentHTML('afterbegin', svg);
+      });
+    }
+    buildRoughBorders();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildRoughBorders);
+    let rbTimer;
+    window.addEventListener('resize', () => { clearTimeout(rbTimer); rbTimer = setTimeout(buildRoughBorders, 160); });
+
+    const screen = tc.querySelector('.phone-screen');
+    const handle = tc.querySelector('[data-tc-handle]');
+    const setSplit = (pct) => {
+      pct = Math.max(2, Math.min(98, pct));
+      screen.style.setProperty('--split', pct + '%');
+      handle.setAttribute('aria-valuenow', Math.round(pct));
+    };
+    const fromX = (clientX) => {
+      const r = screen.getBoundingClientRect();
+      setSplit(((clientX - r.left) / r.width) * 100);
+    };
+    let dragging = false;
+    screen.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      try { screen.setPointerCapture(e.pointerId); } catch (_) {}
+      fromX(e.clientX);
+      e.preventDefault();
+    });
+    screen.addEventListener('pointermove', (e) => { if (dragging) fromX(e.clientX); });
+    const stop = () => { dragging = false; };
+    screen.addEventListener('pointerup', stop);
+    screen.addEventListener('pointercancel', stop);
+    handle.addEventListener('keydown', (e) => {
+      const cur = parseFloat(handle.getAttribute('aria-valuenow')) || 50;
+      if (e.key === 'ArrowLeft') { setSplit(cur - 4); e.preventDefault(); }
+      else if (e.key === 'ArrowRight') { setSplit(cur + 4); e.preventDefault(); }
+    });
+    setSplit(50);
   }
 </script>

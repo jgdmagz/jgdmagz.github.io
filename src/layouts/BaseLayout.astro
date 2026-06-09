@@ -21,6 +21,7 @@ const {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta name="generator" content={Astro.generator} />
+    <slot name="head" />
   </head>
   <body>
     <header class="nav">
@@ -41,9 +42,16 @@ const {
       </button>
       <nav class="nav-links" id="nav-menu">
         <a href="/#features">Features</a>
+        <a href="/#themes">Themes</a>
+        <a href="/#install">Install</a>
         <a href="/blog">Blog</a>
         <a href="/login">Log in</a>
-        <a href="/#get" class="btn btn-sm">Get the app</a>
+        <a
+          href="https://testflight.apple.com/join/wjhfuk5M"
+          target="_blank"
+          rel="noopener"
+          class="btn btn-sm">Join the beta</a
+        >
       </nav>
     </header>
 
@@ -79,6 +87,22 @@ const {
         navMenu.querySelectorAll('a').forEach((link) =>
           link.addEventListener('click', () => setOpen(false))
         );
+      }
+
+      // Nav gains a hairline border + stronger blur once the page scrolls.
+      const navEl = document.querySelector('.nav');
+      if (navEl) {
+        let navTick = false;
+        const onScroll = () => {
+          if (navTick) return;
+          navTick = true;
+          requestAnimationFrame(() => {
+            navEl.classList.toggle('scrolled', window.scrollY > 8);
+            navTick = false;
+          });
+        };
+        addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
       }
 
       // Scroll-reveal — fade/rise elements tagged .reveal as they enter view.
