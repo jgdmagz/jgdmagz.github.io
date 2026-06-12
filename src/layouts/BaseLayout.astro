@@ -55,6 +55,31 @@ const {
       </nav>
     </header>
 
+    <!--
+      No-flash auth nav: synchronously (before paint) paint the account chip
+      from the stored session + cached profile, so the nav never flickers
+      "Log in" → chip on navigation. The module script at the bottom of <body>
+      is the source of truth and refreshes / corrects this.
+    -->
+    <script is:inline>
+      (function () {
+        try {
+          if (!localStorage.getItem('sb-jatxquhxqxrnjbmjoqna-auth-token')) return;
+          var link = document.getElementById('nav-auth');
+          if (!link) return;
+          var c = JSON.parse(localStorage.getItem('sf-nav-profile') || 'null') || {};
+          var first = (c.first || 'Account').replace(/[&<>"]/g, '');
+          var initial = (first.charAt(0) || 'A').toUpperCase();
+          var inner = c.avatar
+            ? '<img src="' + encodeURI(c.avatar) + '" alt="">'
+            : initial;
+          link.href = '/account';
+          link.className = 'nav-auth signed-in';
+          link.innerHTML = '<span class="nav-avatar">' + inner + '</span><span>' + first + '</span>';
+        } catch (e) {}
+      })();
+    </script>
+
     <main>
       <slot />
     </main>
@@ -152,6 +177,7 @@ const {
           authLink.href = '/login';
           authLink.textContent = 'Log in';
           authLink.classList.remove('signed-in');
+          try { localStorage.removeItem('sf-nav-profile'); } catch (_) {}
           return;
         }
         authLink.href = '/account';
@@ -174,6 +200,10 @@ const {
         authLink.innerHTML =
           `<span class="nav-avatar">${avatarUrl ? `<img src="${esc(avatarUrl)}" alt="" />` : initial}</span>` +
           `<span>${first}</span>`;
+        // Cache for the synchronous pre-paint script on the next navigation.
+        try {
+          localStorage.setItem('sf-nav-profile', JSON.stringify({ first, avatar: avatarUrl || null }));
+        } catch (_) {}
       }
 
       supabase.auth.onAuthStateChange((_event, session) => syncNav(session));

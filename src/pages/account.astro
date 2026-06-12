@@ -122,8 +122,9 @@ import FlowMark from '../components/FlowMark.astro';
     }
 
     function renderTerm(p) {
-      const bits = [p.term_label, p.term_system].filter(Boolean);
-      $('term').textContent = bits.length ? bits.join(' · ') : 'Set in the app';
+      // term_label is the human label ("Fall 2025"); term_system alone
+      // ("semester") isn't a meaningful "current term" to show.
+      $('term').textContent = p.term_label || 'Set in the app';
     }
 
     async function loadProfile() {
