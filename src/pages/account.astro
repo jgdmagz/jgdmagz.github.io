@@ -16,6 +16,9 @@ import FlowMark from '../components/FlowMark.astro';
     <div class="auth-card card">
       <div class="auth-mark"><FlowMark size={50} gradId="fgAccount" /></div>
 
+      <!-- Always-visible boot error so JS failures never show a blank card -->
+      <p id="boot-error" class="auth-status" hidden></p>
+
       <!-- Signed-out gate -->
       <div id="gate" hidden>
         <h1>Your <span class="grad-text">account</span></h1>
@@ -90,6 +93,16 @@ import FlowMark from '../components/FlowMark.astro';
     let user = null;
     let pendingAvatar = null;
 
+    // Surface anything that would otherwise fail silently and leave a blank
+    // card. boot-error sits outside the hidden gate/account divs.
+    function bootError(msg) {
+      const el = $('boot-error');
+      if (el) { el.hidden = false; el.textContent = msg; }
+    }
+    addEventListener('error', (e) => bootError('Error: ' + (e.message || e.error)));
+    addEventListener('unhandledrejection', (e) =>
+      bootError('Error: ' + ((e.reason && e.reason.message) || e.reason)));
+
     function setStatus(msg, isError = false) {
       const el = $('status');
       el.hidden = false;
@@ -114,11 +127,13 @@ import FlowMark from '../components/FlowMark.astro';
     }
 
     async function loadProfile() {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single();
+      // PGRST116 = no row yet (fine — fields stay blank). Surface anything else.
+      if (error && error.code !== 'PGRST116') bootError('Profile: ' + error.message);
       const p = data ?? {};
       $('name').value = p.display_name ?? '';
       $('school').value = p.school ?? '';
@@ -127,21 +142,26 @@ import FlowMark from '../components/FlowMark.astro';
       renderAvatar(p.avatar_url);
     }
 
-    async function init() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
+    function render(session) {
+      try {
+        if (!session) {
+          $('gate').hidden = false;
+          $('account').hidden = true;
+          return;
+        }
+        user = session.user;
+        $('gate').hidden = true;
+        $('account').hidden = false;
+        $('email').textContent = user.email ?? user.id;
+        loadProfile();
+      } catch (err) {
+        // Never leave a blank card — show the gate and the reason.
+        bootError('Render failed: ' + (err && err.message ? err.message : err));
         $('gate').hidden = false;
-        $('account').hidden = true;
-        return;
       }
-      user = session.user;
-      $('gate').hidden = true;
-      $('account').hidden = false;
-      $('email').textContent = user.email ?? user.id;
-      await loadProfile();
     }
 
-    $('avatar-input').addEventListener('change', async (e) => {
+    $('avatar-input')?.addEventListener('change', async (e) => {
       const file = e.target.files[0];
       if (!file || !user) return;
       setStatus('Uploading photo…');
@@ -156,7 +176,7 @@ import FlowMark from '../components/FlowMark.astro';
       setStatus('Photo updated — Save to keep it.');
     });
 
-    $('save').addEventListener('click', async () => {
+    $('save')?.addEventListener('click', async () => {
       if (!user) return;
       setStatus('Saving…');
       // Only the web-editable fields — term_* stays app-owned and is left
@@ -174,13 +194,20 @@ import FlowMark from '../components/FlowMark.astro';
       setStatus('Saved ✓');
     });
 
-    $('signout').addEventListener('click', async () => {
+    $('signout')?.addEventListener('click', async () => {
       await supabase.auth.signOut();
       window.location.href = '/login';
     });
 
-    supabase.auth.onAuthStateChange(() => init());
-    init();
+    // INITIAL_SESSION fires immediately with the stored session; SIGNED_IN
+    // fires after an OAuth redirect. Either way render() gets the session.
+    supabase.auth.onAuthStateChange((_event, session) => render(session));
+    supabase.auth.getSession()
+      .then(({ data }) => render(data.session))
+      .catch((err) => {
+        bootError('getSession failed: ' + (err && err.message ? err.message : err));
+        $('gate').hidden = false;
+      });
   </script>
 </BaseLayout>
 
