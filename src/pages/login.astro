@@ -36,7 +36,8 @@ import FlowMark from '../components/FlowMark.astro';
       <div id="signed-in" hidden>
         <h1>You're in 🎉</h1>
         <p class="auth-sub">Signed in as <strong id="who"></strong></p>
-        <button id="signout" class="btn btn-ghost" type="button">Sign out</button>
+        <a href="/account" class="apple-btn" role="button">Manage your account</a>
+        <button id="signout" class="btn btn-ghost" type="button" style="margin-top:0.7rem">Sign out</button>
       </div>
 
       <p id="status" class="auth-status" hidden></p>
