@@ -1,0 +1,22 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import FlowApp from '../../app/FlowApp';
+
+// Every top-level app view is a real static page, so deep links and refresh
+// work on GitHub Pages. In-app navigation is client-side (pushState).
+export function getStaticPaths() {
+  return [
+    { params: { view: undefined }, props: { view: 'today', title: 'Today' } },
+    { params: { view: 'calendar' }, props: { view: 'calendar', title: 'Calendar' } },
+    { params: { view: 'courses' }, props: { view: 'courses', title: 'Courses' } },
+    { params: { view: 'profile' }, props: { view: 'profile', title: 'Profile' } },
+  ];
+}
+
+type View = 'today' | 'calendar' | 'courses' | 'profile';
+const { view, title } = Astro.props as { view: View; title: string };
+---
+
+<AppLayout title={`${title} · StudentFlow`}>
+  <FlowApp client:only="react" initialView={view} />
+</AppLayout>

@@ -36,7 +36,8 @@ import FlowMark from '../components/FlowMark.astro';
       <div id="signed-in" hidden>
         <h1>You're in 🎉</h1>
         <p class="auth-sub">Signed in as <strong id="who"></strong></p>
-        <a href="/account" class="apple-btn" role="button">Manage your account</a>
+        <a href="/app" class="apple-btn" role="button">Open the web app</a>
+        <a href="/app/profile" class="btn btn-ghost" role="button" style="margin-top:0.7rem">Your profile</a>
         <button id="signout" class="btn btn-ghost" type="button" style="margin-top:0.7rem">Sign out</button>
       </div>
 
@@ -69,9 +70,10 @@ import FlowMark from '../components/FlowMark.astro';
 
     $('apple').addEventListener('click', async () => {
       $('status').hidden = true;
+      // Land straight in the web app after the Apple round-trip.
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'apple',
-        options: { redirectTo: window.location.origin + window.location.pathname },
+        options: { redirectTo: window.location.origin + '/app' },
       });
       if (error) { $('status').hidden = false; $('status').textContent = error.message; }
     });

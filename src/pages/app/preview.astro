@@ -1,0 +1,14 @@
+---
+import AppLayout from '../../layouts/AppLayout.astro';
+import FlowApp from '../../app/FlowApp';
+
+// Live demo of the web app with sample data — no account, nothing saved.
+// Switch views with ?view=today|calendar|courses|profile.
+---
+
+<AppLayout
+  title="Live demo · StudentFlow"
+  description="Poke around the StudentFlow web app with sample data — no account needed."
+>
+  <FlowApp client:only="react" demo />
+</AppLayout>

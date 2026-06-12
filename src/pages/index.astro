@@ -35,6 +35,10 @@ const faqs = [
     a: 'The beta is free. The core dashboard, GPA tracking, and assignment tools stay free to start — StudentFlow Plus will add Canvas sync, GPA goals, and degree planning for power users.',
   },
   {
+    q: 'Is there a web version?',
+    a: 'Yes — the full StudentFlow web app lives at studentflowapp.com/app. Sign in with the same Apple ID you use in the app and your profile, courses, assignments and planner are right there in the browser.',
+  },
+  {
     q: "Will it sync with my school's Canvas?",
     a: "Canvas sync is on the way — it'll pull your courses and assignments in automatically, so you never have to enter a deadline by hand.",
   },
@@ -78,7 +82,7 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
 
     <div class="hero-inner">
       <div class="hero-copy">
-        <span class="eyebrow anim-up" style="--d: 0s"><span class="dot"></span> Now in beta · iOS</span>
+        <span class="eyebrow anim-up" style="--d: 0s"><span class="dot"></span> Now in beta · iOS + Web</span>
         <h1 class="anim-up" style="--d: 0.06s">Your semester,<br /><span class="grad-text">in flow.</span></h1>
         <p class="lede anim-up" style="--d: 0.12s">
           Every course, grade, and deadline in one calm place. StudentFlow turns the
@@ -88,7 +92,7 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
           <a href={TESTFLIGHT} target="_blank" rel="noopener" class="btn btn-primary btn-lg">
             Join the beta on TestFlight
           </a>
-          <a href="#install" class="btn btn-ghost btn-lg">How to install →</a>
+          <a href="/app" class="btn btn-ghost btn-lg">Use it on the web →</a>
         </div>
         <div class="cta-note anim-up" style="--d: 0.24s">
           <Fragment set:html={checkGlyph} />
@@ -245,6 +249,46 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
     </div>
   </section>
 
+  <!-- ═══════════════ Web app ═══════════════ -->
+  <section class="section" id="webapp">
+    <div class="web-band reveal reveal-scale">
+      <div class="web-copy">
+        <span class="eyebrow"><span class="dot"></span> New · works with the app</span>
+        <h2>StudentFlow, now in your browser</h2>
+        <p>
+          Sign in with the same Apple&nbsp;ID and your profile, courses, assignments and the
+          Wave&nbsp;Timeline planner follow you to any laptop or library computer — no install needed.
+        </p>
+        <div class="web-cta">
+          <a href="/app" class="btn btn-primary btn-lg">Open the web app →</a>
+          <a href="/app/preview" class="btn btn-ghost">Try the live demo</a>
+          <span class="web-note">Free · same account as the iPhone app</span>
+        </div>
+      </div>
+      <a href="/app" class="web-mock" aria-label="Open the StudentFlow web app">
+        <span class="wm-chrome">
+          <i></i><i></i><i></i>
+          <span class="wm-url">studentflowapp.com/app</span>
+        </span>
+        <span class="wm-body">
+          <span class="wm-side">
+            <b class="wm-coin"></b>
+            <i class="on"></i><i></i><i></i><i></i>
+          </span>
+          <span class="wm-main">
+            <svg class="wm-wave" viewBox="0 0 30 200" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M15 0 C 24 18 6 36 15 54 C 24 72 6 90 15 108 C 24 126 6 144 15 162 C 21 175 11 188 15 200" />
+            </svg>
+            <b class="wm-card wm-now"></b>
+            <b class="wm-card"></b>
+            <b class="wm-gap"></b>
+            <b class="wm-card wm-short"></b>
+          </span>
+        </span>
+      </a>
+    </div>
+  </section>
+
   <!-- ═══════════════ FAQ ═══════════════ -->
   <section class="section" id="faq">
     <div class="section-head">
@@ -272,6 +316,7 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
       <h2>Find your flow this semester.</h2>
       <p>Join the StudentFlow beta and help shape it — your feedback steers what we build next.</p>
       <a href={TESTFLIGHT} target="_blank" rel="noopener" class="btn btn-primary btn-lg">Join the beta on TestFlight</a>
+      <a href="/app" class="btn btn-ghost btn-lg" style="margin-left: 0.6rem">Use the web app</a>
     </div>
   </section>
 </BaseLayout>
@@ -713,3 +758,200 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
     setSplit(50);
   }
 </script>
+
+<style>
+  /* ── Web app band ── */
+  .web-band {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(220px, 0.85fr);
+    align-items: center;
+    gap: clamp(1.6rem, 4vw, 3.2rem);
+    padding: clamp(1.8rem, 4vw, 3rem);
+    border-radius: 32px;
+    background:
+      radial-gradient(120% 160% at 85% 10%, rgba(207, 209, 246, 0.55) 0%, transparent 55%),
+      radial-gradient(120% 160% at 10% 95%, rgba(224, 241, 232, 0.5) 0%, transparent 55%),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.75), #fff);
+    border: 1px solid rgba(76, 78, 190, 0.12);
+    box-shadow: 0 30px 70px -38px rgba(40, 36, 110, 0.45);
+    overflow: hidden;
+  }
+  .web-copy h2 {
+    margin: 0.9rem 0 0.7rem;
+    font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    line-height: 1.12;
+  }
+  .web-copy p {
+    margin: 0 0 1.5rem;
+    color: var(--ink-mid);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    max-width: 470px;
+  }
+  .web-cta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .web-note {
+    color: var(--ink-subtle);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* Mini browser mock */
+  .web-mock {
+    display: block;
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid rgba(27, 28, 46, 0.08);
+    border-radius: 18px;
+    box-shadow: 0 30px 60px -28px rgba(40, 36, 110, 0.5);
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+  .web-mock:hover {
+    transform: translateY(-5px) rotate(-0.4deg);
+    box-shadow: 0 42px 80px -32px rgba(40, 36, 110, 0.6);
+  }
+  .wm-chrome {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 9px 12px;
+    background: var(--canvas-deep);
+    border-bottom: 1px solid rgba(27, 28, 46, 0.06);
+  }
+  .wm-chrome i {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(27, 28, 46, 0.14);
+  }
+  .wm-url {
+    flex: 1;
+    margin-left: 8px;
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: var(--ink-subtle);
+    background: #fff;
+    border-radius: 999px;
+    padding: 4px 11px;
+    letter-spacing: 0.01em;
+  }
+  .wm-body {
+    display: flex;
+    min-height: 212px;
+    background: var(--canvas);
+  }
+  .wm-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 11px;
+    border-right: 1px solid rgba(27, 28, 46, 0.05);
+    background: rgba(255, 255, 255, 0.75);
+  }
+  .wm-coin {
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--logo-1), var(--logo-2));
+    margin-bottom: 4px;
+  }
+  .wm-side i {
+    width: 14px;
+    height: 14px;
+    border-radius: 5px;
+    background: rgba(89, 91, 205, 0.14);
+  }
+  .wm-side i.on {
+    background: linear-gradient(135deg, var(--logo-1), var(--logo-2));
+  }
+  .wm-main {
+    position: relative;
+    flex: 1;
+    padding: 14px 14px 14px 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    justify-content: center;
+  }
+  .wm-wave {
+    position: absolute;
+    left: 8px;
+    top: 0;
+    height: 100%;
+    width: 22px;
+  }
+  .wm-wave path {
+    fill: none;
+    stroke: var(--accent-soft);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.75;
+  }
+  .wm-card {
+    display: block;
+    height: 38px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.7), #fff);
+    border: 1px solid rgba(27, 28, 46, 0.06);
+    box-shadow: 0 8px 18px -10px rgba(27, 28, 46, 0.18);
+    position: relative;
+  }
+  .wm-card::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 9px;
+    bottom: 9px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--mint);
+  }
+  .wm-card.wm-now {
+    height: 56px;
+    border: 1px solid rgba(89, 91, 205, 0.22);
+    box-shadow: 0 14px 26px -12px rgba(76, 78, 190, 0.4);
+  }
+  .wm-card.wm-now::before {
+    background: linear-gradient(180deg, var(--logo-1), var(--logo-2));
+  }
+  .wm-card.wm-now::after {
+    content: '';
+    position: absolute;
+    left: 22px;
+    bottom: 11px;
+    right: 30%;
+    height: 4px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--logo-1), var(--logo-2));
+    opacity: 0.55;
+  }
+  .wm-card.wm-short {
+    width: 82%;
+  }
+  .wm-card.wm-short::before {
+    background: var(--amber);
+  }
+  .wm-gap {
+    display: block;
+    height: 26px;
+    border-radius: 10px;
+    border: 1.4px dashed rgba(158, 159, 234, 0.7);
+  }
+
+  @media (max-width: 860px) {
+    .web-band {
+      grid-template-columns: 1fr;
+    }
+    .web-mock {
+      max-width: 420px;
+    }
+  }
+</style>

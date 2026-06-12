@@ -43,7 +43,7 @@ const {
       <nav class="nav-links" id="nav-menu">
         <a href="/#features">Features</a>
         <a href="/#themes">Themes</a>
-        <a href="/#install">Install</a>
+        <a href="/app">Web app</a>
         <a href="/blog">Blog</a>
         <a href="/login" id="nav-auth" class="nav-auth">Log in</a>
         <a
@@ -73,7 +73,7 @@ const {
           var inner = c.avatar
             ? '<img src="' + encodeURI(c.avatar) + '" alt="">'
             : initial;
-          link.href = '/account';
+          link.href = '/app/profile';
           link.className = 'nav-auth signed-in';
           link.innerHTML = '<span class="nav-avatar">' + inner + '</span><span>' + first + '</span>';
         } catch (e) {}
@@ -180,7 +180,7 @@ const {
           try { localStorage.removeItem('sf-nav-profile'); } catch (_) {}
           return;
         }
-        authLink.href = '/account';
+        authLink.href = '/app/profile';
         authLink.classList.add('signed-in');
         let name = session.user.email || 'Account';
         let avatarUrl = null;

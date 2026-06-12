@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+import '../styles/app.css';
+
+// Full-viewport layout for the /app web app — no marketing nav or footer.
+// The React island (FlowApp) owns everything inside <body>.
+const {
+  title = 'StudentFlow',
+  description = 'The StudentFlow web app — your courses, assignments and planner, synced with the iOS app.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f8f7fa" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="StudentFlow" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="robots" content="noindex" />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body class="app-body">
+    <!-- Static splash shown until the island hydrates (removed by FlowApp). -->
+    <div id="app-splash" aria-hidden="true">
+      <svg width="64" height="64" viewBox="0 0 64 64">
+        <defs>
+          <linearGradient id="splashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#8F90ED"></stop>
+            <stop offset="52%" stop-color="#595BCD"></stop>
+            <stop offset="100%" stop-color="#4C4EBE"></stop>
+          </linearGradient>
+        </defs>
+        <circle cx="32" cy="32" r="31.5" fill="url(#splashGrad)"></circle>
+        <path d="M14 21.4 Q 23 17.4 32 21.4 T 50 21.4" fill="none" stroke="#fff" stroke-opacity="0.94" stroke-width="5.2" stroke-linecap="round"></path>
+        <path d="M14 32 Q 23 28 32 32 T 50 32" fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="round"></path>
+        <path d="M14 42.6 Q 23 38.6 32 42.6 T 50 42.6" fill="none" stroke="#fff" stroke-opacity="0.94" stroke-width="5.2" stroke-linecap="round"></path>
+      </svg>
+    </div>
+    <slot />
+  </body>
+</html>
