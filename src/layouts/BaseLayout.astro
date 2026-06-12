@@ -45,7 +45,7 @@ const {
         <a href="/#themes">Themes</a>
         <a href="/#install">Install</a>
         <a href="/blog">Blog</a>
-        <a href="/login">Log in</a>
+        <a href="/login" id="nav-auth" class="nav-auth">Log in</a>
         <a
           href="https://testflight.apple.com/join/wjhfuk5M"
           target="_blank"
@@ -126,5 +126,86 @@ const {
         reveals.forEach((el) => io.observe(el));
       }
     </script>
+
+    <!--
+      Auth-aware nav. A read-only Supabase client (no URL detection / no token
+      refresh so it never fights the per-page auth client) swaps the "Log in"
+      link for an account chip — avatar + first name → /account — when signed
+      in. Signed-out / no-JS users just see "Log in".
+    -->
+    <script is:inline type="module">
+      import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+      const supabase = createClient(
+        'https://jatxquhxqxrnjbmjoqna.supabase.co',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImphdHhxdWh4cXhybmpibWpvcW5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTAyMTksImV4cCI6MjA5NjE4NjIxOX0.cx2qMXzadunoJtq82FT-UYAstFZ_ym3FAnIpHkzgzdM',
+        { auth: { persistSession: true, autoRefreshToken: false, detectSessionInUrl: false } }
+      );
+
+      const authLink = document.getElementById('nav-auth');
+      const esc = (s) =>
+        String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+      async function syncNav(session) {
+        if (!authLink) return;
+        if (!session) {
+          authLink.href = '/login';
+          authLink.textContent = 'Log in';
+          authLink.classList.remove('signed-in');
+          return;
+        }
+        authLink.href = '/account';
+        authLink.classList.add('signed-in');
+        let name = session.user.email || 'Account';
+        let avatarUrl = null;
+        try {
+          const { data } = await supabase
+            .from('profiles')
+            .select('display_name, avatar_url')
+            .eq('id', session.user.id)
+            .single();
+          if (data) {
+            name = data.display_name || name;
+            avatarUrl = data.avatar_url;
+          }
+        } catch (_) {}
+        const first = esc((name || 'Account').split('@')[0].split(' ')[0]) || 'Account';
+        const initial = first.charAt(0).toUpperCase() || 'A';
+        authLink.innerHTML =
+          `<span class="nav-avatar">${avatarUrl ? `<img src="${esc(avatarUrl)}" alt="" />` : initial}</span>` +
+          `<span>${first}</span>`;
+      }
+
+      supabase.auth.onAuthStateChange((_event, session) => syncNav(session));
+      supabase.auth.getSession().then(({ data }) => syncNav(data.session)).catch(() => {});
+    </script>
   </body>
 </html>
+
+<style is:global>
+  .nav-auth.signed-in {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 600;
+  }
+  .nav-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #6466e6, #4c4eb0);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    overflow: hidden;
+    flex: 0 0 auto;
+  }
+  .nav-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
