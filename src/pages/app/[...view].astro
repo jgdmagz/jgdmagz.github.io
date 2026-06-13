@@ -8,12 +8,13 @@ export function getStaticPaths() {
   return [
     { params: { view: undefined }, props: { view: 'today', title: 'Today' } },
     { params: { view: 'calendar' }, props: { view: 'calendar', title: 'Calendar' } },
+    { params: { view: 'flow' }, props: { view: 'flow', title: 'Flow' } },
     { params: { view: 'courses' }, props: { view: 'courses', title: 'Courses' } },
     { params: { view: 'profile' }, props: { view: 'profile', title: 'Profile' } },
   ];
 }
 
-type View = 'today' | 'calendar' | 'courses' | 'profile';
+type View = 'today' | 'calendar' | 'flow' | 'courses' | 'profile';
 const { view, title } = Astro.props as { view: View; title: string };
 ---
 

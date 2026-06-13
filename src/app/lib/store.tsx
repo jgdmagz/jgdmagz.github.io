@@ -42,6 +42,7 @@ export type AuthStatus = 'loading' | 'signed-out' | 'signed-in';
 
 interface StoreValue {
   authStatus: AuthStatus;
+  demo: boolean;
   user: User | null;
   dataReady: boolean;
   dataError: string | null;
@@ -417,6 +418,7 @@ export function StoreProvider({ children, demo = false }: { children: ReactNode;
   const value = useMemo<StoreValue>(
     () => ({
       authStatus,
+      demo,
       user,
       dataReady,
       dataError,
@@ -440,7 +442,7 @@ export function StoreProvider({ children, demo = false }: { children: ReactNode;
       toggleBlockDone,
     }),
     [
-      authStatus, user, dataReady, dataError, profile, courses, assignments, blocks,
+      authStatus, demo, user, dataReady, dataError, profile, courses, assignments, blocks,
       signInWithApple, signOut, deleteAccount, reload, saveProfile, uploadAvatar,
       upsertCourse, deleteCourse, upsertAssignment, toggleAssignment, deleteAssignment,
       upsertBlock, deleteBlock, toggleBlockDone,

@@ -1,25 +1,28 @@
 import { useCallback, useEffect, useState } from 'react';
 import { StoreProvider } from './lib/store';
 import { AuthGate } from './components/AuthGate';
+import { FlowProvider } from './components/FlowContext';
 import { Shell } from './components/Shell';
 import { Toasts } from './components/ui';
 import { TodayView } from './views/TodayView';
 import { CalendarView } from './views/CalendarView';
+import { FlowView } from './views/FlowView';
 import { CoursesView } from './views/CoursesView';
 import { ProfileView } from './views/ProfileView';
 
-export type AppView = 'today' | 'calendar' | 'courses' | 'profile';
+export type AppView = 'today' | 'calendar' | 'flow' | 'courses' | 'profile';
 
 const TITLES: Record<AppView, string> = {
   today: 'Today',
   calendar: 'Calendar',
+  flow: 'Flow',
   courses: 'Courses',
   profile: 'Profile',
 };
 
 function viewFromPath(pathname: string): AppView {
   const seg = pathname.replace(/\/+$/, '').split('/').pop();
-  if (seg === 'calendar' || seg === 'courses' || seg === 'profile') return seg;
+  if (seg === 'calendar' || seg === 'flow' || seg === 'courses' || seg === 'profile') return seg;
   return 'today';
 }
 
@@ -37,7 +40,8 @@ export default function FlowApp({
   const [view, setView] = useState<AppView>(() => {
     if (demo && typeof location !== 'undefined') {
       const v = new URLSearchParams(location.search).get('view');
-      if (v === 'calendar' || v === 'courses' || v === 'profile' || v === 'today') return v;
+      if (v === 'calendar' || v === 'flow' || v === 'courses' || v === 'profile' || v === 'today')
+        return v;
     }
     return initialView;
   });
@@ -75,16 +79,19 @@ export default function FlowApp({
 
   return (
     <StoreProvider demo={demo}>
-      <AuthGate>
-        <Shell view={view} onNavigate={navigate}>
-          <div className="view-fade" key={view}>
-            {view === 'today' && <TodayView onNavigate={navigate} />}
-            {view === 'calendar' && <CalendarView />}
-            {view === 'courses' && <CoursesView />}
-            {view === 'profile' && <ProfileView />}
-          </div>
-        </Shell>
-      </AuthGate>
+      <FlowProvider>
+        <AuthGate>
+          <Shell view={view} onNavigate={navigate}>
+            <div className="view-fade" key={view}>
+              {view === 'today' && <TodayView onNavigate={navigate} />}
+              {view === 'calendar' && <CalendarView />}
+              {view === 'flow' && <FlowView />}
+              {view === 'courses' && <CoursesView />}
+              {view === 'profile' && <ProfileView />}
+            </div>
+          </Shell>
+        </AuthGate>
+      </FlowProvider>
       {demo && (
         <a className="demo-pill glass" href="/app">
           Demo data — sign in to make it yours →

@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
 import { useStore } from '../lib/store';
+import { useFlow } from './FlowContext';
 import { Avatar, FlowCoin, Icon } from './ui';
 import type { AppView } from '../FlowApp';
 
 const NAV: { key: AppView; label: string; icon: string }[] = [
   { key: 'today', label: 'Today', icon: 'sun' },
   { key: 'calendar', label: 'Calendar', icon: 'calendar' },
+  { key: 'flow', label: 'Flow', icon: 'infinity' },
   { key: 'courses', label: 'Courses', icon: 'book' },
   { key: 'profile', label: 'Profile', icon: 'user' },
 ];
@@ -30,6 +32,8 @@ export function Shell({
   children: ReactNode;
 }) {
   const { profile, user, signOut } = useStore();
+  const { state: flowState } = useFlow();
+  const flowRunning = flowState.status === 'running';
   const displayName = profile?.display_name || user?.email?.split('@')[0] || 'Student';
 
   return (
@@ -54,8 +58,12 @@ export function Shell({
               onClick={() => onNavigate(item.key)}
               aria-current={view === item.key ? 'page' : undefined}
             >
-              <Icon name={item.icon} size={19} />
+              <span className="side-link-ico">
+                <Icon name={item.icon} size={19} />
+                {item.key === 'flow' && flowRunning && <span className="nav-live" aria-hidden="true" />}
+              </span>
               <span>{item.label}</span>
+              {item.key === 'flow' && flowRunning && <span className="nav-live-text">In flow</span>}
             </button>
           ))}
         </nav>
@@ -96,7 +104,10 @@ export function Shell({
             onClick={() => onNavigate(item.key)}
             aria-current={view === item.key ? 'page' : undefined}
           >
-            <Icon name={item.icon} size={21} />
+            <span className="tab-ico">
+              <Icon name={item.icon} size={21} />
+              {item.key === 'flow' && flowRunning && <span className="nav-live" aria-hidden="true" />}
+            </span>
             <span>{item.label}</span>
           </button>
         ))}
