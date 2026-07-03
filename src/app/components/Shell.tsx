@@ -1,15 +1,18 @@
-import type { ReactNode } from 'react';
-import { useStore } from '../lib/store';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useFlow } from './FlowContext';
-import { Avatar, FlowCoin, Icon } from './ui';
+import { EventSheet } from './EventSheet';
+import { AssignmentSheet } from './AssignmentSheet';
+import { FlowMark, Icon } from './ui';
 import type { AppView } from '../FlowApp';
 
-const NAV: { key: AppView; label: string; icon: string }[] = [
-  { key: 'today', label: 'Today', icon: 'sun' },
+/* Port of ContentView.swift's shell: 3-tab floating pill (Home / Calendar /
+   Courses), a stacked "+" FAB with Event/Todo quick actions, and the 64px
+   glowing-glass Flow wave button. Flow and Profile are routes, not tabs. */
+
+const TABS: { key: AppView; label: string; icon: string }[] = [
+  { key: 'today', label: 'Home', icon: 'house' },
   { key: 'calendar', label: 'Calendar', icon: 'calendar' },
-  { key: 'flow', label: 'Flow', icon: 'infinity' },
-  { key: 'courses', label: 'Courses', icon: 'book' },
-  { key: 'profile', label: 'Profile', icon: 'user' },
+  { key: 'courses', label: 'Courses', icon: 'bookFill' },
 ];
 
 export function AmbientBackground() {
@@ -22,6 +25,25 @@ export function AmbientBackground() {
   );
 }
 
+/* headerBubbleOverlay — two faint white circles at the top, geometry per tab. */
+function HeaderBubbles({ view }: { view: AppView }) {
+  if (view !== 'today' && view !== 'calendar' && view !== 'courses') return null;
+  return (
+    <div className={`head-bubbles hb-${view}`} aria-hidden="true">
+      <span className="hb-big" />
+      <span className="hb-small" />
+    </div>
+  );
+}
+
+/** Next round hour → +1h, matching ContentView.nextRoundHour(). */
+function nextRoundHour(): Date {
+  const d = new Date();
+  d.setMinutes(0, 0, 0);
+  d.setHours(d.getHours() + 1);
+  return d;
+}
+
 export function Shell({
   view,
   onNavigate,
@@ -31,87 +53,126 @@ export function Shell({
   onNavigate: (view: AppView) => void;
   children: ReactNode;
 }) {
-  const { profile, user, signOut } = useStore();
   const { state: flowState } = useFlow();
-  const flowRunning = flowState.status === 'running';
-  const displayName = profile?.display_name || user?.email?.split('@')[0] || 'Student';
+  const flowActive = flowState.status === 'running' || flowState.status === 'paused';
+
+  const [fabOpen, setFabOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [sheet, setSheet] = useState<'event' | 'todo' | null>(null);
+  const lastY = useRef(0);
+
+  // Collapse the bar on scroll down (> 8px), expand on scroll up — ContentView's drag gesture.
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      const dy = y - lastY.current;
+      if (Math.abs(dy) > 8) {
+        setCollapsed(dy > 0 && y > 60);
+        lastY.current = y;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const tabIndex = TABS.findIndex((t) => t.key === view);
+
+  const openSheet = (kind: 'event' | 'todo') => {
+    setFabOpen(false);
+    setSheet(kind);
+  };
 
   return (
     <div className="app-shell">
       <AmbientBackground />
+      <HeaderBubbles view={view} />
 
-      {/* Desktop sidebar */}
-      <aside className="app-side glass">
-        <a className="side-brand" href="/" title="StudentFlow home">
-          <FlowCoin size={40} animated />
-          <span className="side-brand-name">
-            StudentFlow
-            <span className="side-brand-sub">Web app</span>
-          </span>
-        </a>
+      <main className="app-main">{children}</main>
 
-        <nav className="side-nav" aria-label="App">
-          {NAV.map((item) => (
+      {/* Invisible click-catcher while the FAB menu is open */}
+      {fabOpen && <div className="fab-scrim" onClick={() => setFabOpen(false)} />}
+
+      {/* FAB quick actions — Event / Todo */}
+      {fabOpen && (
+        <div className="fab-menu">
+          <div className="fab-row">
+            <span className="fab-row-label">Event</span>
+            <button className="fab-row-btn fab-event" onClick={() => openSheet('event')} aria-label="New event">
+              <Icon name="calendarPlus" size={19} strokeWidth={2.1} />
+            </button>
+          </div>
+          <div className="fab-row">
+            <span className="fab-row-label">Todo</span>
+            <button className="fab-row-btn fab-todo" onClick={() => openSheet('todo')} aria-label="New todo">
+              <Icon name="checklist" size={19} strokeWidth={2.1} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Floating bottom cluster */}
+      <div className={`tabbar-cluster${collapsed ? ' collapsed' : ''}`}>
+        <nav
+          className="tab-pill glow-glass gg-pill"
+          aria-label="App"
+          onClick={() => collapsed && setCollapsed(false)}
+        >
+          <span
+            className="tab-well"
+            style={{ transform: `translateX(${Math.max(0, tabIndex) * 100}%)`, opacity: tabIndex < 0 ? 0 : 1 }}
+            aria-hidden="true"
+          />
+          {TABS.map((item) => (
             <button
               key={item.key}
-              className={`side-link${view === item.key ? ' active' : ''}`}
-              onClick={() => onNavigate(item.key)}
+              className={`tab${view === item.key ? ' active' : ''}`}
+              onClick={() => {
+                setCollapsed(false);
+                onNavigate(item.key);
+              }}
               aria-current={view === item.key ? 'page' : undefined}
             >
-              <span className="side-link-ico">
-                <Icon name={item.icon} size={19} />
-                {item.key === 'flow' && flowRunning && <span className="nav-live" aria-hidden="true" />}
+              <span className="tab-ico">
+                <Icon name={item.icon} size={collapsed ? 16 : 18} strokeWidth={2} />
               </span>
-              <span>{item.label}</span>
-              {item.key === 'flow' && flowRunning && <span className="nav-live-text">In flow</span>}
+              <span className="tab-label">{item.label}</span>
             </button>
           ))}
         </nav>
 
-        <div className="side-foot">
-          <button className="side-user" onClick={() => onNavigate('profile')}>
-            <Avatar url={profile?.avatar_url} name={displayName} size={34} />
-            <span className="side-user-meta">
-              <span className="side-user-name">{displayName}</span>
-              <span className="side-user-mail">{user?.email ?? ''}</span>
-            </span>
+        <div className="bar-right">
+          <button
+            className={`add-fab glow-glass gg-add${fabOpen ? ' open' : ''}`}
+            onClick={() => {
+              setFabOpen((o) => !o);
+              setCollapsed(false);
+            }}
+            aria-label={fabOpen ? 'Close quick add' : 'Quick add'}
+            aria-expanded={fabOpen}
+          >
+            <Icon name="plus" size={18} strokeWidth={2.4} />
           </button>
-          <button className="icon-btn side-signout" onClick={signOut} title="Sign out" aria-label="Sign out">
-            <Icon name="logout" size={17} />
+          <button
+            className="flow-fab glow-glass gg-flow"
+            onClick={() => onNavigate('flow')}
+            aria-label="Flow"
+            title="Flow"
+          >
+            {flowActive && view !== 'flow' && <span className="flow-fab-ring" aria-hidden="true" />}
+            <FlowMark size={40} color="#475CD1" animated />
           </button>
         </div>
-      </aside>
+      </div>
 
-      {/* Mobile top bar */}
-      <header className="app-top glass">
-        <a className="top-brand" href="/" aria-label="StudentFlow home">
-          <FlowCoin size={30} />
-        </a>
-        <span className="top-title">{NAV.find((n) => n.key === view)?.label}</span>
-        <button className="top-avatar" onClick={() => onNavigate('profile')} aria-label="Profile">
-          <Avatar url={profile?.avatar_url} name={displayName} size={30} />
-        </button>
-      </header>
-
-      <main className="app-main">{children}</main>
-
-      {/* Mobile tab bar */}
-      <nav className="app-tabs glass" aria-label="App">
-        {NAV.map((item) => (
-          <button
-            key={item.key}
-            className={`tab${view === item.key ? ' active' : ''}`}
-            onClick={() => onNavigate(item.key)}
-            aria-current={view === item.key ? 'page' : undefined}
-          >
-            <span className="tab-ico">
-              <Icon name={item.icon} size={21} />
-              {item.key === 'flow' && flowRunning && <span className="nav-live" aria-hidden="true" />}
-            </span>
-            <span>{item.label}</span>
-          </button>
-        ))}
-      </nav>
+      {sheet === 'event' && (
+        <EventSheet
+          day={new Date()}
+          defaultStart={nextRoundHour()}
+          defaultEnd={new Date(nextRoundHour().getTime() + 3600000)}
+          onClose={() => setSheet(null)}
+        />
+      )}
+      {sheet === 'todo' && <AssignmentSheet onClose={() => setSheet(null)} />}
     </div>
   );
 }

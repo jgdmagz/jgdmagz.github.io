@@ -162,10 +162,11 @@ export interface FlowPalette {
 }
 
 export function paletteFor(mode: FlowMode, phase: FlowPhase): FlowPalette {
-  if (mode === 'endless') return { a: '#8F90ED', b: '#595BCD', c: '#71BF9D', label: 'Endless flow' };
-  if (phase === 'shortBreak') return { a: '#71BF9D', b: '#4DBFA6', c: '#9E9FEA', label: 'Short break' };
-  if (phase === 'longBreak') return { a: '#B79EF2', b: '#9E9FEA', c: '#F6BE73', label: 'Long break' };
-  return { a: '#8F90ED', b: '#4C4EBE', c: '#B79EF2', label: 'Focus' };
+  // waveColor per RegularFlowView.swift — accent / mint / coral.
+  if (mode === 'endless') return { a: '#8F90ED', b: '#595BCD', c: '#71BF9D', label: 'Endless Flow' };
+  if (phase === 'shortBreak') return { a: '#71BF9D', b: '#71BF9D', c: '#9E9FEA', label: 'Short Break' };
+  if (phase === 'longBreak') return { a: '#EF8E8E', b: '#EF8E8E', c: '#F6BE73', label: 'Long Break' };
+  return { a: '#8F90ED', b: '#595BCD', c: '#B79EF2', label: 'Focus' };
 }
 
 /* ── Formatting ─────────────────────────────────────────────────── */
@@ -176,7 +177,8 @@ export function fmtClock(totalSeconds: number): string {
   const m = Math.floor((s % 3600) / 60);
   const sec = s % 60;
   if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-  return `${m}:${String(sec).padStart(2, '0')}`;
+  // Zero-padded minutes (00:06) to mirror the app's formatTime ("%02d:%02d").
+  return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
 }
 
 export function fmtTotal(totalSeconds: number): string {

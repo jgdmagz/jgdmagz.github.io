@@ -13,7 +13,7 @@ import { ProfileView } from './views/ProfileView';
 export type AppView = 'today' | 'calendar' | 'flow' | 'courses' | 'profile';
 
 const TITLES: Record<AppView, string> = {
-  today: 'Today',
+  today: 'Home',
   calendar: 'Calendar',
   flow: 'Flow',
   courses: 'Courses',
@@ -85,7 +85,7 @@ export default function FlowApp({
             <div className="view-fade" key={view}>
               {view === 'today' && <TodayView onNavigate={navigate} />}
               {view === 'calendar' && <CalendarView />}
-              {view === 'flow' && <FlowView />}
+              {view === 'flow' && <FlowView onNavigate={navigate} />}
               {view === 'courses' && <CoursesView />}
               {view === 'profile' && <ProfileView />}
             </div>

@@ -141,6 +141,35 @@ const ICON_PATHS: Record<string, ReactNode> = {
   play: <path d="M8 5.2v13.6L19 12z" />,
   pause: <path d="M8.2 5.5v13M15.8 5.5v13" />,
   stop: <rect x="6.5" y="6.5" width="11" height="11" rx="2.4" />,
+  minus: <path d="M5 12h14" />,
+  brain: (
+    <>
+      <path d="M12 6a2.6 2.6 0 0 0-4.8-1.1A2.7 2.7 0 0 0 4.7 8.4a2.8 2.8 0 0 0 .2 4.2A2.5 2.5 0 0 0 7 17a2.5 2.5 0 0 0 5 .2z" />
+      <path d="M12 6a2.6 2.6 0 0 1 4.8-1.1A2.7 2.7 0 0 1 19.3 8.4a2.8 2.8 0 0 1-.2 4.2A2.5 2.5 0 0 1 17 17a2.5 2.5 0 0 1-5 .2z" />
+    </>
+  ),
+  coffee: (
+    <>
+      <path d="M5 8.5h11v4.5a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4z" />
+      <path d="M16 9.5h1.8a2.2 2.2 0 0 1 0 4.4H16" />
+      <path d="M5 21h11" />
+    </>
+  ),
+  sofa: (
+    <>
+      <path d="M5 11V9a2.5 2.5 0 0 1 2.5-2.5h9A2.5 2.5 0 0 1 19 9v2" />
+      <path d="M3.5 14.5a2 2 0 0 1 4 0V16h9v-1.5a2 2 0 1 1 4 0V19h-17z" />
+      <path d="M6.5 19v1.6M17.5 19v1.6" />
+    </>
+  ),
+  repeat: (
+    <>
+      <path d="M16.5 4 19.5 7l-3 3" />
+      <path d="M19.5 7H8.5a4 4 0 0 0-4 4v.5" />
+      <path d="M7.5 20 4.5 17l3-3" />
+      <path d="M4.5 17h11a4 4 0 0 0 4-4v-.5" />
+    </>
+  ),
   apple: (
     <path
       d="M16.6 12.9c0-2.1.95-3.7 2.9-4.9-1.1-1.55-2.73-2.4-4.9-2.57-1.95-.15-4.3 1.2-5.12 1.2-.87 0-2.86-1.14-4.42-1.14C2.5 5.55 0 8.05 0 13.18c0 1.53.28 3.12.84 4.75.75 2.14 3.46 7.4 6.3 7.3 1.48-.03 2.53-1.05 4.45-1.05 1.87 0 2.84 1.05 4.48 1.05 2.85-.04 5.3-4.82 6.02-6.96-3.83-1.8-3.5-5.28-3.5-5.38zM12.9 4.6c1.78-2.1 1.62-4.03 1.57-4.6-1.57.1-3.4 1.07-4.43 2.28-1.14 1.3-1.8 2.92-1.66 4.7 1.7.14 3.25-.74 4.53-2.26z"
@@ -148,6 +177,121 @@ const ICON_PATHS: Record<string, ReactNode> = {
       stroke="none"
       transform="scale(0.85) translate(2.5 1)"
     />
+  ),
+  /* iOS parity set — house.fill, book.fill, gearshape, person.crop.circle,
+     calendar.badge.plus, checklist, exclamationmark.circle, sun.max,
+     checkmark.circle, briefcase.fill, mappin.and.ellipse, arrow.clockwise,
+     rectangle.stack, arrow.right, lock.shield, list of guided tasks. */
+  house: (
+    <path
+      d="M12 3.2l8.2 6.9a1.4 1.4 0 0 1 .5 1.07v8.03a1.8 1.8 0 0 1-1.8 1.8h-3.6a1 1 0 0 1-1-1v-4.3a2.3 2.3 0 0 0-4.6 0V20a1 1 0 0 1-1 1H5.1a1.8 1.8 0 0 1-1.8-1.8v-8.03a1.4 1.4 0 0 1 .5-1.07z"
+      fill="currentColor"
+      stroke="none"
+    />
+  ),
+  bookFill: (
+    <path
+      d="M4 6.3A2.8 2.8 0 0 1 6.8 3.5H19a1 1 0 0 1 1 1v12.2a1 1 0 0 1-1 1H6.8c-.66 0-1.26.23-1.75.6-.44.35-1.05.06-1.05-.5zm2.8 13.4h12.4a.9.9 0 0 1 0 1.8H6.6a2.6 2.6 0 0 1-2.55-2.1c.63.2 1.6.3 2.75.3z"
+      fill="currentColor"
+      stroke="none"
+    />
+  ),
+  gear: (
+    <>
+      <circle cx="12" cy="12" r="3.1" />
+      <path d="M12 2.9l1 2.3a7 7 0 0 1 2.1.87l2.4-.83 1.26 2.18-1.62 1.93c.17.66.26 1.35.26 2.05l1.9 1.55-1.26 2.18-2.46-.5a7 7 0 0 1-1.58 1.4l.06 2.5-2.52.44-.96-2.32a7 7 0 0 1-2.1-.36l-1.9 1.63-1.93-1.63 1.06-2.27a7 7 0 0 1-1.06-1.83l-2.48-.4V9.9l2.4-.55c.24-.68.58-1.32 1-1.9L4.6 5.2l1.93-1.63 2.1 1.4a7 7 0 0 1 1.94-.68z" />
+    </>
+  ),
+  userCircle: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="9.6" r="3" fill="currentColor" stroke="none" />
+      <path
+        d="M5.9 18.6c1.1-2.6 3.3-4 6.1-4s5 1.4 6.1 4a9 9 0 0 1-12.2 0z"
+        fill="currentColor"
+        stroke="none"
+      />
+    </>
+  ),
+  calendarPlus: (
+    <>
+      <path d="M20.8 10.5V8.8a4 4 0 0 0-4-4H7.2a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h5.3" />
+      <path d="M3.2 9.8h17.6M8 2.8v4M16 2.8v4" />
+      <path d="M18.5 14.5v6M15.5 17.5h6" />
+    </>
+  ),
+  checklist: (
+    <>
+      <path d="M3.5 6.5l1.6 1.6 3-3.2" />
+      <path d="M11.5 7h9" />
+      <path d="M3.5 15.5l1.6 1.6 3-3.2" />
+      <path d="M11.5 16h9" />
+    </>
+  ),
+  alertCircle: (
+    <>
+      <circle cx="12" cy="12" r="8.8" />
+      <path d="M12 7.6v5M12 15.9v.4" />
+    </>
+  ),
+  checkCircle: (
+    <>
+      <circle cx="12" cy="12" r="8.8" />
+      <path d="M8.2 12.4l2.6 2.6 5-5.6" />
+    </>
+  ),
+  briefcase: (
+    <path
+      d="M9 6.2V5.4A2.4 2.4 0 0 1 11.4 3h1.2A2.4 2.4 0 0 1 15 5.4v.8h3.2a2.8 2.8 0 0 1 2.8 2.8v8.2a2.8 2.8 0 0 1-2.8 2.8H5.8A2.8 2.8 0 0 1 3 17.2V9a2.8 2.8 0 0 1 2.8-2.8zm1.8 0h2.4v-.8a.6.6 0 0 0-.6-.6h-1.2a.6.6 0 0 0-.6.6z"
+      fill="currentColor"
+      stroke="none"
+    />
+  ),
+  mapPin: (
+    <>
+      <path d="M12 21.5s-7-5.8-7-11a7 7 0 0 1 14 0c0 5.2-7 11-7 11z" />
+      <circle cx="12" cy="10.2" r="2.4" />
+    </>
+  ),
+  restart: (
+    <>
+      <path d="M19.8 12a7.8 7.8 0 1 1-2.3-5.5" />
+      <path d="M18 2.8v3.9h-3.9" />
+    </>
+  ),
+  layers: (
+    <>
+      <rect x="5" y="4" width="14" height="10" rx="2.4" />
+      <path d="M6.4 17h11.2M7.8 20h8.4" />
+    </>
+  ),
+  arrowRight: <path d="M4.5 12h15M13.5 6l6 6-6 6" />,
+  bolt: (
+    <path
+      d="M13.2 2.5L5 13.4h5.2L9.6 21.5l8.4-11.4h-5.3z"
+      fill="currentColor"
+      stroke="none"
+    />
+  ),
+  crown: (
+    <path
+      d="M3 8.2l4.4 3.4L12 5.2l4.6 6.4L21 8.2l-1.6 9.3a1.6 1.6 0 0 1-1.58 1.3H6.18a1.6 1.6 0 0 1-1.58-1.3z"
+      fill="currentColor"
+      stroke="none"
+    />
+  ),
+  bell: (
+    <>
+      <path d="M12 3.2a6 6 0 0 1 6 6v3.2l1.5 3a1 1 0 0 1-.9 1.4H5.4a1 1 0 0 1-.9-1.4l1.5-3V9.2a6 6 0 0 1 6-6z" />
+      <path d="M9.8 19.8a2.3 2.3 0 0 0 4.4 0" />
+    </>
+  ),
+  shield: (
+    <>
+      <path d="M12 3l7 2.6v5.2c0 4.6-2.9 8.2-7 10.2-4.1-2-7-5.6-7-10.2V5.6z" />
+      <rect x="9.4" y="10" width="5.2" height="4.6" rx="1.2" />
+      <path d="M10.6 10V8.8a1.4 1.4 0 0 1 2.8 0V10" />
+    </>
   ),
 };
 
@@ -180,27 +324,31 @@ export function Icon({
   );
 }
 
-/* ── FlowCoin — the brand coin (gradient disc + three flowing waves) ── */
+/* ── FlowMark / FlowCoin — the brand glyph (three flowing sine waves) ──
+   Exact port of FlowDesign.swift's FlowMark: rows at ±0.165·S with the middle
+   row widest (0.155–0.845 vs 0.20–0.80), centered sine, one shared phase that
+   loops every 4 s at ≤30 fps. */
 
-function coinWavePath(size: number, cy: number, amplitude: number, wavelength: number, phase: number): string {
-  const inset = size * 0.22;
-  const x0 = inset;
-  const x1 = size - inset;
+const MARK_ROWS: { off: number; x0: number; x1: number; alpha: number }[] = [
+  { off: -0.165, x0: 0.2, x1: 0.8, alpha: 0.96 },
+  { off: 0, x0: 0.155, x1: 0.845, alpha: 1 },
+  { off: 0.165, x0: 0.2, x1: 0.8, alpha: 0.96 },
+];
+
+function markWavePath(size: number, row: (typeof MARK_ROWS)[number], phase: number): string {
+  const amp = size * 0.052;
+  const wavelength = size * 0.6;
+  const cy = size / 2 + row.off * size;
   let d = '';
-  for (let x = x0; x <= x1; x += 1.5) {
-    const y = cy + amplitude * Math.sin((x / wavelength) * 2 * Math.PI + phase);
+  for (let x = row.x0 * size; x <= row.x1 * size; x += 1.5) {
+    const y = cy + amp * Math.sin(((x - size / 2) / wavelength) * 2 * Math.PI + phase);
     d += (d ? 'L' : 'M') + x.toFixed(2) + ' ' + y.toFixed(2);
   }
   return d;
 }
 
-export function FlowCoin({ size = 40, animated = false }: { size?: number; animated?: boolean }) {
-  const gradId = useId();
+function useMarkAnimation(size: number, animated: boolean) {
   const refs = [useRef<SVGPathElement>(null), useRef<SVGPathElement>(null), useRef<SVGPathElement>(null)];
-  const amplitude = size * 0.052;
-  const wavelength = size * 0.6;
-  const offsets = [-size * 0.165, 0, size * 0.165];
-
   useEffect(() => {
     if (!animated) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -212,17 +360,49 @@ export function FlowCoin({ size = 40, animated = false }: { size?: number; anima
       last = t;
       const phase = (t / 1000) * ((2 * Math.PI) / 4); // full cycle every 4s
       refs.forEach((ref, i) => {
-        ref.current?.setAttribute(
-          'd',
-          coinWavePath(size, size / 2 + offsets[i], amplitude, wavelength, phase + i * 0.7)
-        );
+        ref.current?.setAttribute('d', markWavePath(size, MARK_ROWS[i], phase));
       });
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [animated, size]);
+  return refs;
+}
 
+/** Bare three-wave mark (no coin) — the shell's Flow button glyph. */
+export function FlowMark({
+  size = 40,
+  color = '#475CD1',
+  animated = false,
+}: {
+  size?: number;
+  color?: string;
+  animated?: boolean;
+}) {
+  const refs = useMarkAnimation(size, animated);
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true" className="flow-mark">
+      {MARK_ROWS.map((row, i) => (
+        <path
+          key={i}
+          ref={refs[i]}
+          d={markWavePath(size, row, 0)}
+          fill="none"
+          stroke={color}
+          strokeOpacity={row.alpha}
+          strokeWidth={size * 0.082}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      ))}
+    </svg>
+  );
+}
+
+export function FlowCoin({ size = 40, animated = false }: { size?: number; animated?: boolean }) {
+  const gradId = useId();
+  const refs = useMarkAnimation(size, animated);
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden="true" className="flow-coin">
       <defs>
@@ -231,6 +411,10 @@ export function FlowCoin({ size = 40, animated = false }: { size?: number; anima
           <stop offset="52%" stopColor="#595BCD" />
           <stop offset="100%" stopColor="#4C4EBE" />
         </linearGradient>
+        <linearGradient id={`${gradId}-rim`} x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.35)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0.10)" />
+        </linearGradient>
       </defs>
       <circle cx={size / 2} cy={size / 2} r={size / 2 - 0.5} fill={`url(#${gradId})`} />
       <circle
@@ -238,19 +422,20 @@ export function FlowCoin({ size = 40, animated = false }: { size?: number; anima
         cy={size / 2}
         r={size / 2 - 1}
         fill="none"
-        stroke="rgba(255,255,255,0.32)"
-        strokeWidth={Math.max(1, size * 0.018)}
+        stroke={`url(#${gradId}-rim)`}
+        strokeWidth={Math.max(1, size * 0.012)}
       />
-      {offsets.map((off, i) => (
+      {MARK_ROWS.map((row, i) => (
         <path
           key={i}
           ref={refs[i]}
-          d={coinWavePath(size, size / 2 + off, amplitude, wavelength, i * 0.7)}
+          d={markWavePath(size, row, 0)}
           fill="none"
           stroke="#fff"
-          strokeOpacity={i === 1 ? 1 : 0.94}
+          strokeOpacity={row.alpha}
           strokeWidth={size * 0.082}
           strokeLinecap="round"
+          strokeLinejoin="round"
         />
       ))}
     </svg>
@@ -298,6 +483,12 @@ export function ProgressRing({
       {children ? <div className="ring-center">{children}</div> : null}
     </div>
   );
+}
+
+/* ── Overlay portal — full-screen surfaces escape any transformed ancestor ── */
+
+export function Overlay({ children }: { children: ReactNode }) {
+  return createPortal(children, document.body);
 }
 
 /* ── Modal (bottom sheet on small screens, centered card on desktop) ── */

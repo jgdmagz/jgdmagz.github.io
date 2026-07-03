@@ -103,6 +103,7 @@ interface FlowContextValue {
   resume: () => void;
   stop: () => void;
   skipBreak: () => void;
+  takeBreak: (kind: 'short' | 'long') => void;
   lap: () => void;
   updateSettings: (patch: Partial<FlowSettings>) => void;
 }
@@ -300,6 +301,23 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     });
   }, [endlessMs]);
 
+  /** Manual break — the Regular session's Short/Long Break chips. */
+  const takeBreak = useCallback((kind: 'short' | 'long') => {
+    const now = Date.now();
+    setState((prev) => {
+      if (prev.mode !== 'regular' || prev.phase !== 'work' || prev.status === 'idle') return prev;
+      const secs = (kind === 'short' ? settingsRef.current.shortMin : settingsRef.current.longMin) * 60;
+      return {
+        ...prev,
+        phase: kind === 'short' ? 'shortBreak' : 'longBreak',
+        phaseTotal: secs,
+        remaining: secs,
+        endsAt: prev.status === 'running' ? now + secs * 1000 : null,
+        sessionStartedAt: now,
+      };
+    });
+  }, []);
+
   const updateSettings = useCallback((patch: Partial<FlowSettings>) => {
     setSettings((prev) => {
       const next = { ...prev, ...patch };
@@ -329,10 +347,11 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       resume,
       stop,
       skipBreak,
+      takeBreak,
       lap,
       updateSettings,
     }),
-    [state, settings, stats, history, now, secondsLeft, endlessMs, setMode, setName, start, pause, resume, stop, skipBreak, lap, updateSettings]
+    [state, settings, stats, history, now, secondsLeft, endlessMs, setMode, setName, start, pause, resume, stop, skipBreak, takeBreak, lap, updateSettings]
   );
 
   return <FlowContext.Provider value={value}>{children}</FlowContext.Provider>;
