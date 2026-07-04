@@ -1,43 +1,55 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import FlowMark from '../components/FlowMark.astro';
+import AppStoreBadge from '../components/AppStoreBadge.astro';
 import '../styles/home.css';
 
-const TESTFLIGHT = 'https://testflight.apple.com/join/wjhfuk5M';
+const APPSTORE = 'https://apps.apple.com/us/app/studentflow-academic-planner/id6776430933';
 
-// Feature-card glyphs — inlined (no JS needed) so the cards render even
-// without scripts. On-brand line icons matching the app's iconography.
-const featIcons = {
-  dash: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
-  chart: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>',
-  check: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>',
-  bolt: '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg>',
-  cal: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
-  flow: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 8.2a4 4 0 1 0 0 7.6c2.3 0 3.6-1.8 5.2-4s2.9-4 5.2-4a4 4 0 1 1 0 7.6c-2.3 0-3.6-1.8-5.2-4"/></svg>',
+// Small inline line-icons (stroke, currentColor) used across the page.
+const ico = {
+  check: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/></svg>',
+  spark: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c.5 3.5 2 5 5.5 5.5C14 8 12.5 9.5 12 13c-.5-3.5-2-5-5.5-5.5C10 7 11.5 5.5 12 2Z"/><path d="M19 13c.3 1.8 1 2.5 2.8 2.8-1.8.3-2.5 1-2.8 2.7-.3-1.8-1-2.5-2.7-2.8 1.7-.2 2.4-1 2.7-2.7Z"/></svg>',
+  gap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>',
+  board: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M9 4v17M15 4v17"/></svg>',
+  zoom: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M11 8v6M8 11h6"/></svg>',
+  pillico: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="8" rx="4"/><circle cx="8" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>',
+  ticks: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 12h18M7 9v6M12 8v8M17 10v4"/></svg>',
+  grade: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="3.4"/></svg>',
+  clock: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  inf: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 7.5a4.5 4.5 0 1 0 0 9c2.5 0 4-2 5.5-4.5C13.5 9.5 15 7.5 17.5 7.5a4.5 4.5 0 1 1 0 9c-2.5 0-4-2-5.5-4.5C10.5 9.5 9 7.5 6.5 7.5Z"/></svg>',
+  list: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><path d="m3 6 1 1 2-2M3 12l1 1 2-2M3 18l1 1 2-2"/></svg>',
+  shield: '<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/><path d="m9 11.5 2 2 4-4.5"/></svg>',
+  flame: '<svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s4 4 4 8a4 4 0 0 1-8 0c0-1 .5-2 .5-2S6 11 6 14a6 6 0 0 0 12 0c0-5-6-12-6-12z"/></svg>',
+  medal: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s3 3.2 3 6a3 3 0 0 1-6 0c0-.8.35-1.6.35-1.6S8 8.6 8 10.5a4 4 0 0 0 8 0c0-3.5-4-8.5-4-8.5z" transform="translate(0 3.4) scale(0.94)"/></svg>',
+  award: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 12.9 17 22l-5-3-5 3 1.5-9.1"/></svg>',
+  arrow: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  chevD: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+  sync: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-9 9c-2.52 0-4.93-1-6.74-2.74L3 16"/><path d="M3 12a9 9 0 0 1 9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5M3 21v-5h5"/></svg>',
 };
-
-const features = [
-  { title: 'Academic dashboard', body: 'Every course, grade, and deadline at a glance — organized by term.', color: 'var(--accent)', icon: featIcons.dash },
-  { title: 'GPA tracking', body: 'Always know exactly where you stand, course by course.', color: 'var(--mint)', icon: featIcons.chart },
-  { title: 'Flow focus timer', body: 'Pomodoro cycles or open-ended deep work, with a mesmerizing living timer that keeps you in the zone.', color: 'var(--lavender)', icon: featIcons.flow },
-  { title: 'Assignments & planner', body: 'Turn your to-dos into a calm Wave Timeline — plan free time with a tap.', color: 'var(--amber)', icon: featIcons.check },
-  { title: 'GPA calculator & degree progress', body: 'Plan the grades you need and watch your degree fill in.', color: 'var(--coral)', icon: featIcons.chart, soon: true },
-  { title: 'Canvas sync', body: 'Bring your Canvas courses and assignments in automatically.', color: 'var(--accent-deep)', icon: featIcons.cal, soon: true },
-];
 
 const faqs = [
   {
-    q: 'How do I join the beta?',
-    a: "Open the TestFlight invite link on your iPhone, install Apple's free TestFlight app if you don't have it, then tap Install next to StudentFlow. The full steps are right above.",
+    q: 'Is StudentFlow free?',
+    a: 'Yes — StudentFlow is free to download on the App Store. The planner, calendar, focus timer, and GPA tracking are all part of the core app; optional StudentFlow Plus upgrades unlock power features as they ship.',
     open: true,
   },
   {
-    q: 'How much does it cost?',
-    a: 'The beta is free. The core dashboard, GPA tracking, and assignment tools stay free to start — StudentFlow Plus will add Canvas sync, GPA goals, and degree planning for power users.',
+    q: 'Is there a web version?',
+    a: 'Yes — the full StudentFlow web app lives at studentflowapp.com/app. Sign in with the same Apple ID you use on iPhone and your courses, calendar, planner, and Flow timer are right there in the browser.',
   },
   {
-    q: 'Is there a web version?',
-    a: 'Yes — the full StudentFlow web app lives at studentflowapp.com/app. Sign in with the same Apple ID you use in the app and your profile, courses, assignments and planner are right there in the browser.',
+    q: "What's Lock-In Mode?",
+    a: 'A distraction guard for your Flow sessions. Turn it on before you start and ending early takes a deliberate hold-to-confirm instead of a single tap — so you actually finish what you started.',
+  },
+  {
+    q: 'What is Guided Flow?',
+    a: 'A third focus mode alongside Regular and Endless. Instead of a generic timer, you pick the exact assignments you want to work through, and StudentFlow guides you across them.',
+  },
+  {
+    q: 'Can StudentFlow read my work schedule?',
+    a: 'Yes. Snap a photo of the posted schedule and StudentFlow reads your shifts and places them on your timeline, right next to classes and deadlines. The recognition runs on-device — the photo never leaves your iPhone.',
   },
   {
     q: "Will it sync with my school's Canvas?",
@@ -45,24 +57,18 @@ const faqs = [
   },
   {
     q: 'Is my academic data private?',
-    a: "Yes. Your courses and grades stay yours. We don't sell your data, and you can explore the app without even creating an account.",
+    a: "Yes. StudentFlow works without an account and runs offline; your courses and grades live on your device. We don't sell your data — and the web app only uses your Apple ID to sign you in.",
   },
   {
-    q: 'Which platforms will it support?',
-    a: 'StudentFlow launches on iOS first, designed to feel right at home on iPhone. More platforms are on the roadmap.',
+    q: 'What do I need to run it?',
+    a: 'An iPhone running iOS 26 or later for the app — and any modern browser for the web app.',
   },
 ];
-
-// TestFlight propeller glyph (approximation) for the install visuals.
-const testflightGlyph = '<svg width="30" height="30" viewBox="0 0 48 48" fill="#fff" aria-hidden="true"><g transform="translate(24 25)"><g><ellipse cx="0" cy="-11" rx="4.6" ry="8.4"/><ellipse cx="0" cy="-11" rx="4.6" ry="8.4" transform="rotate(120)"/><ellipse cx="0" cy="-11" rx="4.6" ry="8.4" transform="rotate(240)"/><circle cx="0" cy="0" r="3.6" fill="#1aa7d8"/></g></g></svg>';
-const globeGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>';
-const arrowGlyph = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
-const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/></svg>';
 ---
 
 <BaseLayout
   title="StudentFlow — Your semester, in flow"
-  description="StudentFlow brings your courses, assignments, and GPA into one calm, beautiful place — so you can focus on the work, not the chaos. Now in beta on TestFlight."
+  description="StudentFlow: Academic Planner — courses, deadlines, work shifts, and GPA in one calm, living timeline, with a focus timer that keeps you locked in. Free on the App Store."
 >
   <!-- Sketch theme showcase uses Shantell Sans (the app's handwriting font) -->
   <link slot="head" rel="preconnect" href="https://fonts.googleapis.com" />
@@ -73,73 +79,296 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
     rel="stylesheet"
   />
 
-  <!-- ═══════════════ HERO — split, product-led ═══════════════ -->
+  <!-- ═══════════════ HERO — the pixel ocean ═══════════════ -->
   <section class="hero">
-    <div class="hero-bg" aria-hidden="true">
-      <canvas class="matrix"></canvas>
-      <div class="glow"></div>
-      <div class="glow-core"></div>
-    </div>
+    <div class="hero-ocean" aria-hidden="true"><canvas data-ocean="light"></canvas></div>
 
     <div class="hero-inner">
-      <div class="hero-copy">
-        <span class="eyebrow anim-up" style="--d: 0s"><span class="dot"></span> Now in beta · iOS + Web</span>
-        <h1 class="anim-up" style="--d: 0.06s">Your semester,<br /><span class="grad-text">in flow.</span></h1>
-        <p class="lede anim-up" style="--d: 0.12s">
-          Every course, grade, and deadline in one calm place. StudentFlow turns the
-          chaos of school into a single, beautiful view — so you always know what's next.
-        </p>
-        <div class="hero-cta anim-up" style="--d: 0.18s">
-          <a href={TESTFLIGHT} target="_blank" rel="noopener" class="btn btn-primary btn-lg">
-            Join the beta on TestFlight
-          </a>
-          <a href="/app" class="btn btn-ghost btn-lg">Use it on the web →</a>
-        </div>
-        <div class="cta-note anim-up" style="--d: 0.24s">
-          <Fragment set:html={checkGlyph} />
-          Free to start · No account needed to look around
-        </div>
+      <span class="eyebrow anim-up" style="--d: 0.55s"><span class="dot"></span> Now on the App Store</span>
+      <h1>
+        <span class="hl"><span style="--d: 0.05s">Your semester,</span></span>
+        <span class="hl"><span style="--d: 0.16s" class="grad-text">in flow.</span></span>
+      </h1>
+      <p class="lede anim-up" style="--d: 0.62s">
+        Courses, deadlines, work shifts, and GPA — one calm, living timeline.
+        StudentFlow is the academic planner that moves the way your day does.
+      </p>
+      <div class="hero-cta anim-up" style="--d: 0.7s">
+        <a href={APPSTORE} target="_blank" rel="noopener" class="badge-link magnetic" aria-label="Download StudentFlow on the App Store">
+          <AppStoreBadge height={54} />
+        </a>
+        <a href="/app" class="btn btn-ghost btn-lg magnetic">Open the web app →</a>
+      </div>
+      <div class="hero-note anim-up" style="--d: 0.78s">
+        <Fragment set:html={ico.check} />
+        Free to download · No account required · Private by design
       </div>
 
-      <div class="mockup-wrap anim-up" style="--d: 0.2s">
-        <div class="phone-cluster cluster-b">
-          <div class="phone phone-back">
-            <div class="phone-screen" data-vec="endless"></div>
+      <div class="hero-stage anim-up" style="--d: 0.5s">
+        <div class="stage-tilt" data-tilt>
+          <div class="phone phone-left"><div class="phone-screen" data-vec="calendar"></div></div>
+          <div class="phone phone-front"><div class="phone-screen" data-vec="home"></div></div>
+          <div class="phone phone-right"><div class="phone-screen" data-vec="endless"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      A day in the flow
+      <Fragment set:html={ico.chevD} />
+    </div>
+  </section>
+
+  <!-- ═══════════════ A DAY IN THE FLOW ═══════════════ -->
+  <section class="section" id="day">
+    <div class="day-head">
+      <span class="eyebrow reveal"><span class="dot"></span> One app, the whole day</span>
+      <h2 class="section-title reveal" style="--reveal-delay: 0.05s">A day in the flow</h2>
+      <p class="section-sub reveal" style="--reveal-delay: 0.1s">
+        Scroll through a school day the way StudentFlow carries it — from first coffee to lights out.
+      </p>
+    </div>
+
+    <!-- 8:02 AM — My Day -->
+    <article class="chapter" style="--chapter-accent: var(--accent)">
+      <div class="rail" aria-hidden="true">
+        <span class="time-chip">8:02 AM</span>
+        <svg class="rail-line" viewBox="0 0 26 300" preserveAspectRatio="none">
+          <path d="M13 0 C 22 40 4 80 13 120 C 22 160 4 200 13 240 C 19 268 9 286 13 300" />
+        </svg>
+      </div>
+      <div class="chapter-copy reveal">
+        <span class="time-chip time-chip-inline">8:02 AM</span>
+        <span class="chapter-kicker">My Day</span>
+        <h3>Wake up already knowing the plan.</h3>
+        <p>
+          My Day reads your classes, to-dos and shifts, and lays them onto one calm wave —
+          with the gaps made visible, so free time becomes plan-able time.
+        </p>
+        <ul class="chapter-feats">
+          <li>
+            <span class="feat-ico"><Fragment set:html={ico.spark} /></span>
+            <span><b>Task Intelligence.</b> Overdue, due today, and up next — triaged for you before you ask.</span>
+          </li>
+          <li>
+            <span class="feat-ico"><Fragment set:html={ico.gap} /></span>
+            <span><b>Gap chips.</b> "3h 45m free" between stops — tap Plan and spend it on purpose.</span>
+          </li>
+          <li>
+            <span class="feat-ico"><Fragment set:html={ico.chart} /></span>
+            <span><b>Focus Insight.</b> A 7-day chart of your focus time, streak, and average session.</span>
+          </li>
+        </ul>
+      </div>
+      <div class="chapter-visual reveal reveal-scale">
+        <div class="phone" data-chapter-phone><div class="phone-screen" data-vec="home"></div></div>
+      </div>
+    </article>
+
+    <!-- 12:30 PM — Calendar 2.0 -->
+    <article class="chapter flip" style="--chapter-accent: var(--accent-deep)">
+      <div class="rail" aria-hidden="true">
+        <span class="time-chip">12:30 PM</span>
+        <svg class="rail-line" viewBox="0 0 26 300" preserveAspectRatio="none">
+          <path d="M13 0 C 4 40 22 80 13 120 C 4 160 22 200 13 240 C 7 268 17 286 13 300" />
+        </svg>
+      </div>
+      <div class="chapter-copy reveal">
+        <span class="time-chip time-chip-inline">12:30 PM</span>
+        <span class="chapter-kicker">Calendar 2.0</span>
+        <h3>A calendar that runs at true time.</h3>
+        <p>
+          Flick the week strip open into a month — or flip the whole view into a three-day
+          board where events sit at their real hour, and a now-line glides through the day.
+        </p>
+        <ul class="chapter-feats">
+          <li>
+            <span class="feat-ico"><Fragment set:html={ico.board} /></span>
+            <span><b>True-time 3-day board.</b> Overlapping events lane themselves; live classes fill with progress.</span>
+          </li>
+          <li>
+            <span class="feat-ico"><Fragment set:html={ico.zoom} /></span>
+            <span><b>24h zoom.</b> Pull the window to 7a–11p, or keep the whole day on screen.</span>
+          </li>
+          <li>
+            <span class="feat-ico"><Fragment set:html={ico.pillico} /></span>
+            <span><b>The summary pill.</b> "4 planned · 2 due · 3h free" — your day, in one glance.</span>
+          </li>
+        </ul>
+      </div>
+      <div class="chapter-visual reveal reveal-scale">
+        <div class="phone" data-chapter-phone><div class="phone-screen" data-vec="calendar"></div></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- 3:00 PM — FLOW (full-bleed dark band) -->
+  <section class="flowband" id="flow">
+    <div class="flowband-inner">
+      <div class="rail" aria-hidden="true">
+        <span class="time-chip">3:00 PM</span>
+        <svg class="rail-line" viewBox="0 0 26 300" preserveAspectRatio="none">
+          <path d="M13 0 C 22 40 4 80 13 120 C 22 160 4 200 13 240 C 19 268 9 286 13 300" />
+        </svg>
+      </div>
+      <div class="chapter-copy reveal">
+        <span class="time-chip time-chip-inline">3:00 PM</span>
+        <span class="chapter-kicker">Flow</span>
+        <h3>Then — disappear into the work.</h3>
+        <p class="fb-lede">
+          One tap and the noise drops away. A living gradient orb breathes while the timer
+          runs, and the world waits. Three ways in — pick your depth.
+        </p>
+        <div class="fb-modes">
+          <div class="fb-mode" style="--fm-a: #8f90ed; --fm-b: #4c4ebe">
+            <span class="fm-tag">Pomodoro</span>
+            <span class="fm-ico"><Fragment set:html={ico.clock} /></span>
+            <b>Regular</b>
+            <span>Pomodoro style — customize your pace, breaks and all.</span>
           </div>
-          <div class="phone phone-front">
-            <div class="phone-screen" data-vec="home,calendar,regular,break"></div>
+          <div class="fb-mode" style="--fm-a: #71bf9d; --fm-b: #3f9a72">
+            <span class="fm-tag">Deep work</span>
+            <span class="fm-ico"><Fragment set:html={ico.inf} /></span>
+            <b>Endless</b>
+            <span>Keep going with gentle reminders. No clock to beat.</span>
+          </div>
+          <div class="fb-mode" style="--fm-a: #b79ef2; --fm-b: #8a63d9">
+            <span class="fm-tag">Curated</span>
+            <span class="fm-ico"><Fragment set:html={ico.list} /></span>
+            <b>Guided</b>
+            <span>Pick specific assignments to work through, one by one.</span>
           </div>
         </div>
+        <div class="fb-lock">
+          <span class="fl-toggle" aria-hidden="true"></span>
+          <span>
+            <b>Lock In</b>
+            <span>Distraction guard on — leaving early takes a deliberate hold, not a tap.</span>
+          </span>
+        </div>
+      </div>
+      <div class="fb-scene reveal reveal-scale" aria-hidden="true">
+        <div class="fb-orb"></div>
+        <div class="fb-time" data-seconds="2832"><span class="mmss">47:12</span><span class="centi">.00</span></div>
+        <div class="fb-status"><i></i> FLOWING</div>
+        <div class="fb-medal"><Fragment set:html={ico.award} /> On Fire — a solid 30+ minute flow</div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════ Features ═══════════════ -->
-  <section class="section" id="features">
-    <div class="section-head">
-      <span class="eyebrow reveal"><span class="dot"></span> Built for the way you study</span>
-      <h2 class="section-title reveal" style="--reveal-delay: 0.05s">Everything school, in one calm place</h2>
-      <p class="section-sub reveal" style="--reveal-delay: 0.1s">
-        No more juggling tabs, sticky notes, and half-finished spreadsheets. Just your studies, organized.
-      </p>
+  <!-- 9:15 PM — Courses & GPA -->
+  <section class="section">
+    <article class="chapter" style="--chapter-accent: var(--coral)">
+      <div class="rail" aria-hidden="true">
+        <span class="time-chip">9:15 PM</span>
+        <svg class="rail-line" viewBox="0 0 26 300" preserveAspectRatio="none">
+          <path d="M13 0 C 4 40 22 80 13 120 C 4 160 22 200 13 240 C 7 268 17 286 13 300" />
+        </svg>
+      </div>
+      <div class="chapter-copy reveal">
+        <span class="time-chip time-chip-inline">9:15 PM</span>
+        <span class="chapter-kicker">Courses &amp; GPA</span>
+        <h3>End the day knowing exactly where you stand.</h3>
+        <p>
+          The semester view keeps score quietly: term progress with every deadline pinned
+          to the line, pending against done, and your GPA — course by course.
+        </p>
+        <ul class="chapter-feats">
+          <li>
+            <span class="feat-ico"><Fragment set:html={ico.ticks} /></span>
+            <span><b>The term line.</b> Week 4 of 15, deadline ticks ahead, a breathing "now" marker.</span>
+          </li>
+          <li>
+            <span class="feat-ico"><Fragment set:html={ico.grade} /></span>
+            <span><b>GPA, always current.</b> Grade chips per course; a cumulative number that never surprises you.</span>
+          </li>
+          <li>
+            <span class="feat-ico"><Fragment set:html={ico.camera} /></span>
+            <span><b>Work shifts too.</b> Snap a photo of the posted schedule — it lands on your calendar, read on-device.</span>
+          </li>
+        </ul>
+      </div>
+      <div class="chapter-visual reveal reveal-scale">
+        <div class="phone" data-chapter-phone><div class="phone-screen" data-vec="courses"></div></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ═══════════════ Bento — the quiet superpowers ═══════════════ -->
+  <section class="section" id="details">
+    <div class="day-head">
+      <span class="eyebrow reveal"><span class="dot"></span> The quiet superpowers</span>
+      <h2 class="section-title reveal" style="--reveal-delay: 0.05s">Small details, compounding daily</h2>
     </div>
-    <div class="features">
-      {
-        features.map((f, i) => (
-          <article class="card reveal reveal-scale" style={`--card-accent: ${f.color}; --reveal-delay: ${(i % 3) * 0.07}s`}>
-            {f.soon && <span class="pill">Soon</span>}
-            <div class="card-ico" set:html={f.icon} />
-            <h3>{f.title}</h3>
-            <p>{f.body}</p>
-          </article>
-        ))
-      }
+    <div class="bento">
+      <article class="tile tile-3 reveal reveal-scale">
+        <div class="scan-stage" aria-hidden="true">
+          <span class="scan-photo"><i></i><i></i><i></i><i></i></span>
+          <span class="scan-arrow"><Fragment set:html={ico.arrow} /></span>
+          <span class="scan-rows">
+            <span class="scan-row"><i></i> Mon <span class="sr-t">4:00–9:00p</span></span>
+            <span class="scan-row"><i></i> Wed <span class="sr-t">5:30–10:00p</span></span>
+            <span class="scan-row"><i></i> Sat <span class="sr-t">11:00a–4:00p</span></span>
+          </span>
+        </div>
+        <h3>Your work schedule, scanned</h3>
+        <p>
+          Snap a photo of the posted schedule. StudentFlow reads it on-device and drops your
+          shifts straight onto the timeline — next to classes, where they belong.
+        </p>
+      </article>
+
+      <article class="tile tile-3 reveal reveal-scale" style="--reveal-delay: 0.07s">
+        <div class="priv-stage" aria-hidden="true">
+          <span class="priv-ring"><Fragment set:html={ico.shield} /></span>
+        </div>
+        <h3>Private by design</h3>
+        <p>
+          No account required. Works offline. Your courses and grades stay on your iPhone —
+          never sold, never mined. The web app only uses your Apple&nbsp;ID to sign you in.
+        </p>
+      </article>
+
+      <article class="tile tile-2 stat-tile reveal reveal-scale">
+        <div class="gpa-ring" aria-hidden="true">
+          <svg viewBox="0 0 108 108">
+            <defs>
+              <linearGradient id="gpaGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#8f90ed" />
+                <stop offset="1" stop-color="#4c4ebe" />
+              </linearGradient>
+            </defs>
+            <circle class="gr-bg" cx="54" cy="54" r="46" />
+            <circle class="gr-fg" cx="54" cy="54" r="46" style="--gr-off: 66" />
+          </svg>
+          <span class="gpa-num" data-count="3.85" data-decimals="2">0.00</span>
+        </div>
+        <h3>GPA, tracked live</h3>
+        <p>Course by course, term by term.</p>
+      </article>
+
+      <article class="tile tile-2 stat-tile reveal reveal-scale" style="--reveal-delay: 0.07s">
+        <div class="medal-stage" aria-hidden="true">
+          <span class="medallion"><Fragment set:html={ico.medal} /></span>
+        </div>
+        <h3>Finish with a medal</h3>
+        <p>Every session ends in a summary — Locked&nbsp;In → On&nbsp;Fire → In&nbsp;the&nbsp;Zone → Legendary.</p>
+      </article>
+
+      <article class="tile tile-2 stat-tile reveal reveal-scale" style="--reveal-delay: 0.14s">
+        <span class="pill">Soon</span>
+        <div class="medal-stage" aria-hidden="true">
+          <span class="streak-flame" style="color: var(--accent); background: rgba(89,91,205,0.12)"><Fragment set:html={ico.sync} /></span>
+        </div>
+        <h3>Canvas sync</h3>
+        <p>Courses and assignments, pulled in automatically.</p>
+      </article>
     </div>
   </section>
 
   <!-- ═══════════════ Themes (Living Flow vs Sketch) ═══════════════ -->
   <section class="section" id="themes">
-    <div class="section-head">
+    <div class="day-head">
       <span class="eyebrow reveal"><span class="dot"></span> Two themes, one flow</span>
       <h2 class="section-title reveal" style="--reveal-delay: 0.05s">Make it yours</h2>
       <p class="section-sub reveal" style="--reveal-delay: 0.1s">
@@ -181,88 +410,19 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
     </div>
   </section>
 
-  <!-- ═══════════════ Install (TestFlight beta) ═══════════════ -->
-  <section class="section" id="install">
-    <div class="section-head">
-      <span class="eyebrow reveal"><span class="dot"></span> Now in beta</span>
-      <h2 class="section-title reveal" style="--reveal-delay: 0.05s">Get StudentFlow on your iPhone</h2>
-      <p class="section-sub reveal" style="--reveal-delay: 0.1s">
-        The beta runs through Apple's TestFlight. It takes about a minute — here's the whole thing.
-      </p>
-    </div>
-
-    <ol class="install-steps reveal" style="--reveal-delay: 0.05s">
-      <li class="install-step">
-        <span class="install-num">1</span>
-        <div class="install-visual">
-          <span class="iv-link">
-            <span class="iv-globe"><Fragment set:html={globeGlyph} /></span>
-            <span class="iv-url">testflight.apple.com/join/…</span>
-          </span>
-          <span class="iv-tap" aria-hidden="true"></span>
-        </div>
-        <h3>Open the invite</h3>
-        <p>On your iPhone, tap <a class="lnk" href={TESTFLIGHT} target="_blank" rel="noopener">the beta invite link</a>. It opens straight in TestFlight.</p>
-      </li>
-
-      <li class="install-step">
-        <span class="install-num">2</span>
-        <div class="install-visual">
-          <span class="iv-pair">
-            <span class="mini-tile testflight"><Fragment set:html={testflightGlyph} /></span>
-            <span class="iv-arrow"><Fragment set:html={arrowGlyph} /></span>
-            <span class="iv-get">Get</span>
-          </span>
-        </div>
-        <h3>Get TestFlight (free)</h3>
-        <p>First time? The App Store offers Apple's free TestFlight app. Install it, then reopen the invite.</p>
-      </li>
-
-      <li class="install-step">
-        <span class="install-num">3</span>
-        <div class="install-visual">
-          <span class="iv-card">
-            <span class="iv-app"><FlowMark size={34} gradId="fgStep3" /></span>
-            <span class="iv-meta"><b>StudentFlow</b><span>Ready to install</span></span>
-            <span class="iv-install">INSTALL</span>
-          </span>
-        </div>
-        <h3>Tap Install</h3>
-        <p>In TestFlight, tap <strong>Install</strong> next to StudentFlow. It downloads just like any app.</p>
-      </li>
-
-      <li class="install-step">
-        <span class="install-num">4</span>
-        <div class="install-visual">
-          <span class="iv-open">
-            <span class="iv-halo" aria-hidden="true"></span>
-            <FlowMark size={56} gradId="fgStep4" />
-          </span>
-        </div>
-        <h3>Open &amp; start flowing</h3>
-        <p>Find StudentFlow on your Home Screen, open it, and your semester's in flow.</p>
-      </li>
-    </ol>
-
-    <div class="install-cta reveal">
-      <a href={TESTFLIGHT} target="_blank" rel="noopener" class="btn btn-primary btn-lg">Open the beta invite →</a>
-      <p class="install-note">Requires an iPhone on iOS 17 or later and the free TestFlight app. Beta builds update often.</p>
-    </div>
-  </section>
-
   <!-- ═══════════════ Web app ═══════════════ -->
   <section class="section" id="webapp">
     <div class="web-band reveal reveal-scale">
       <div class="web-copy">
-        <span class="eyebrow"><span class="dot"></span> New · works with the app</span>
-        <h2>StudentFlow, now in your browser</h2>
+        <span class="eyebrow"><span class="dot"></span> Works with the app</span>
+        <h2>StudentFlow, in your browser</h2>
         <p>
-          Sign in with the same Apple&nbsp;ID and your profile, courses, assignments, the
-          Wave&nbsp;Timeline planner and the Flow focus timer follow you to any laptop or library
-          computer — no install needed.
+          Sign in with the same Apple&nbsp;ID and your courses, Calendar&nbsp;2.0, GPA, and the
+          Flow timer — Guided sessions, Lock-In and all — follow you to any laptop or library
+          computer. No install needed.
         </p>
         <div class="web-cta">
-          <a href="/app" class="btn btn-primary btn-lg">Open the web app →</a>
+          <a href="/app" class="btn btn-primary btn-lg magnetic">Open the web app →</a>
           <a href="/app/preview" class="btn btn-ghost">Try the live demo</a>
           <span class="web-note">Free · same account as the iPhone app</span>
         </div>
@@ -293,12 +453,9 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
 
   <!-- ═══════════════ FAQ ═══════════════ -->
   <section class="section" id="faq">
-    <div class="section-head">
+    <div class="day-head">
       <span class="eyebrow reveal"><span class="dot"></span> Questions</span>
       <h2 class="section-title reveal" style="--reveal-delay: 0.05s">Good to know</h2>
-      <p class="section-sub reveal" style="--reveal-delay: 0.1s">
-        Everything you might be wondering about the StudentFlow beta.
-      </p>
     </div>
     <div class="faq reveal" style="--reveal-delay: 0.05s">
       {
@@ -312,23 +469,27 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
     </div>
   </section>
 
-  <!-- ═══════════════ Closing CTA ═══════════════ -->
+  <!-- ═══════════════ Closing CTA — dark surf ═══════════════ -->
   <section class="section">
-    <div class="cta-band reveal reveal-scale">
+    <div class="cta-ocean reveal reveal-scale">
+      <div class="ocean" aria-hidden="true"><canvas data-ocean="dark"></canvas></div>
       <h2>Find your flow this semester.</h2>
-      <p>Join the StudentFlow beta and help shape it — your feedback steers what we build next.</p>
-      <a href={TESTFLIGHT} target="_blank" rel="noopener" class="btn btn-primary btn-lg">Join the beta on TestFlight</a>
-      <a href="/app" class="btn btn-ghost btn-lg" style="margin-left: 0.6rem">Use the web app</a>
+      <p>Free on the App Store — and everywhere your day happens.</p>
+      <div class="cta-row">
+        <a href={APPSTORE} target="_blank" rel="noopener" class="badge-link magnetic" aria-label="Download StudentFlow on the App Store">
+          <AppStoreBadge height={56} />
+        </a>
+        <a href="/app" class="btn btn-ghost btn-lg magnetic">Open the web app →</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <script>
   /* ─────────────────────────────────────────────
-     Home page — live phone showcase + motion.
-     Vector app screens (no screenshots), a dot-grid
-     ripple background, ticking focus timers, and the
-     FAQ accordion. Honors Reduce Motion throughout.
+     Home page — pixel oceans, live vector phones,
+     scroll-drawn rails, magnetic CTAs, counters.
+     Honors Reduce Motion throughout.
      ───────────────────────────────────────────── */
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -346,90 +507,173 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
     pause: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>',
     stop: '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="5" width="14" height="14" rx="2.5"/></svg>',
     inf: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 7.5a4.5 4.5 0 1 0 0 9c2.5 0 4-2 5.5-4.5C13.5 9.5 15 7.5 17.5 7.5a4.5 4.5 0 1 1 0 9c-2.5 0-4-2-5.5-4.5C10.5 9.5 9 7.5 6.5 7.5Z"/></svg>',
-    clock: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
-    cup: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a3 3 0 0 1 0 6h-1"/><path d="M3 8h14v5a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M7 2v2M11 2v2"/></svg>',
     home: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>',
     cal: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
     book: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
     wind: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10a2.5 2.5 0 1 0-2.5-2.5"/><path d="M3 12h15a2.5 2.5 0 1 1-2.5 2.5"/><path d="M3 16h8a2.2 2.2 0 1 0-2.2 2.2"/></svg>',
     wifi: '<svg width="15" height="11" viewBox="0 0 16 12" fill="currentColor"><path d="M8 9.5a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Zm0-3.4c1.3 0 2.5.5 3.4 1.4l1.1-1.2A6.6 6.6 0 0 0 8 4.3a6.6 6.6 0 0 0-4.5 1.8l1.1 1.2A4.8 4.8 0 0 1 8 6.1Zm0-3.4c2.2 0 4.3.9 5.8 2.4L15 .9A10 10 0 0 0 8 0 10 10 0 0 0 1 .9l1.2 1.2A8.2 8.2 0 0 1 8 2.7Z"/></svg>',
+    pin: '<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z"/></svg>',
+    check: '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 12.5 4 4L18 8"/></svg>',
+    waves: '<svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4.5 8.1q3.75-2.7 7.5 0t7.5 0"/><path d="M3.8 12q4.1-2.8 8.2 0t8.2 0"/><path d="M4.5 15.9q3.75-2.7 7.5 0t7.5 0"/></svg>',
+    harr: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>',
+    vsel: '<svg width="10" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 9 4-4 4 4M8 15l4 4 4-4"/></svg>',
+    slider: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2.2"/><circle cx="7" cy="16" r="2.2"/></svg>',
+    shrink: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4l-6 6M14 4v6h6M4 20l6-6M10 20v-6H4"/></svg>',
   };
 
   const statusBar = () =>
     `<div class="flow-status-bar"><span>5:03</span><span class="sb-right">${G.wifi}<span class="sb-batt"></span></span></div>`;
-  const tabbar = (active) => {
+  /* The floating tab dock — a 3-tab glass pill plus the separate "+" FAB
+     and Flow wave button, exactly as ContentView lays it out. */
+  const dock = (active) => {
     const tab = (id, label, ico) =>
-      `<div class="vs-tab ${active === id ? 'active' : ''}"><span class="vs-tab-ico">${ico}</span>${label}</div>`;
-    return `<div class="vs-tabbar">${tab('home', 'Home', G.home)}${tab('cal', 'Calendar', G.cal)}${tab('courses', 'Courses', G.book)}<div class="vs-wind">${G.wind}</div></div>`;
+      `<span class="vsx-tab ${active === id ? 'active' : ''}">${ico}<i>${label}</i></span>`;
+    return `<div class="vsx-dock">
+      <span class="vsx-pill">${tab('home', 'Home', G.home)}${tab('cal', 'Calendar', G.cal)}${tab('courses', 'Courses', G.book)}</span>
+      <span class="vsx-fab">${G.plus}</span>
+      <span class="vsx-flow">${G.waves}</span>
+    </div>`;
   };
 
+  /* Shared wave-timeline pieces (FlowTimelineHero / CalRehaulWaveDay port):
+     two-line time column, status dots, glass cards, striped job cards,
+     dashed gap "Plan" chips, and the live NOW card. */
+  const vsxWave = `<svg class="vsx-wave" viewBox="0 0 20 400" preserveAspectRatio="none" fill="none" stroke="rgba(158,159,234,0.8)" stroke-width="2.6" stroke-linecap="round"><path d="M10 0 Q3 30 10 60 Q17 90 10 120 Q3 150 10 180 Q17 210 10 240 Q3 270 10 300 Q17 330 10 360 Q6 385 10 400"/></svg>`;
+  const vsxTime = (a, b) => `<span class="vsx-time">${a}<small>${b}</small></span>`;
+  const vsxDot = (kind, color) => {
+    if (kind === 'done') return `<span class="vsx-dot done" style="background:${color}">${G.check}</span>`;
+    if (kind === 'live') return `<span class="vsx-dot live"><i></i></span>`;
+    return `<span class="vsx-dot future"></span>`;
+  };
+  const vsxJob = (t1, t2, name, sub, loc) =>
+    `<div class="vsx-row">${vsxTime(t1, t2)}${vsxDot('done', 'var(--amber)')}
+      <div class="vsx-card job dim"><span class="bar"></span><b>${name}</b><span class="sub">${sub}</span>${loc ? `<span class="loc">${G.pin} ${loc}</span>` : ''}<span class="done-tag">done</span></div>
+    </div>`;
+  const vsxPlan = (label) =>
+    `<div class="vsx-plan"><span></span><span class="pluscoin">${G.plus}</span><span class="chip"><b>Plan</b>${label}</span></div>`;
+
   function vsHome() {
-    return `<div class="vscreen"><div class="vs vs-home">
+    return `<div class="vscreen"><div class="vs">
       ${statusBar()}
       <div class="vs-head">
-        <div><div class="vs-eyebrow">Sunday · May 31</div><div class="vs-title">Good evening</div></div>
+        <div><div class="vs-eyebrow">Friday · Jul 3</div><div class="vs-title">Good afternoon</div></div>
         <div class="vs-head-btns"><span class="vs-hb">${G.spark}</span><span class="vs-hb">${G.user}</span><span class="vs-hb">${G.gear}</span></div>
       </div>
-      <div class="vs-card vs-day">
-        <div class="vs-card-top"><span class="vs-kicker">My Day</span><span class="vs-streak">${G.flame} 5 day</span></div>
-        <div class="vs-card-h">5 stops on your day.</div>
-        <div class="vs-timeline">
-          <svg class="vs-wave" viewBox="0 0 20 200" preserveAspectRatio="none" fill="none" stroke="rgba(110,112,210,0.5)" stroke-width="3" stroke-linecap="round"><path d="M10 0 Q2 28 10 56 Q18 88 10 120 Q3 154 10 180 Q14 194 10 200"/></svg>
-          <div class="vs-stop"><span class="t">1:00p</span><span class="ring" style="--c:var(--coral)"></span><b>Calculus II</b><span class="dur">1h 15m</span></div>
-          <div class="vs-free"><span></span><span class="plus">${G.plus}</span><span class="lbl">3h 45m free</span></div>
-          <div class="vs-stop"><span class="t">6:00p</span><span class="ring" style="--c:var(--accent)"></span><b>CS 101</b><span class="dur">1h 15m</span></div>
-          <div class="vs-stop"><span class="t">6:00p</span><span class="ring" style="--c:var(--accent-deep)"></span><b>Reading 1</b><span class="dur">CS 101</span></div>
-          <div class="vs-stop"><span class="t">8:00p</span><span class="ring" style="--c:var(--accent-deep)"></span><b>Reading 2</b><span class="dur">CS 101</span></div>
+      <div class="vsx-hero">
+        <div class="vsx-hero-top"><span class="vsx-kicker">My Day</span><span class="vsx-streak">${G.flame} <b>5</b> <i>day</i></span></div>
+        <div class="vsx-h">9 stops on your day.</div>
+        <div class="vsx-tl">
+          ${vsxWave}
+          ${vsxJob('12:30a', '3:00a', 'Cafe', '12:30a – 3:00a · 2h 30m', 'Opening')}
+          ${vsxPlan('6h free')}
+          ${vsxJob('9:00a', '1:00p', 'Starbucks', '9:00a – 1:00p · 4h', 'Downtown')}
+          <div class="vsx-row">${vsxTime('9:00a', '9:50a')}${vsxDot('done', 'var(--mint)')}
+            <div class="vsx-card dim"><span class="bar" style="background:var(--mint)"></span><b>Physics 4B</b><span class="sub">9:00a – 9:50a · 50 min</span><span class="done-tag">done</span></div>
+          </div>
+          ${vsxPlan('3h 10m free')}
+          <div class="vsx-row">${vsxTime('1:00p', '2:15p')}${vsxDot('live')}
+            <div class="vsx-card vsx-now">
+              <div class="vsx-now-top"><span class="now-l"><i></i>NOW</span><span class="now-r">1h 9m left</span></div>
+              <b class="title">Calculus II</b>
+              <span class="dur">1h 15m</span>
+              <span class="vsx-prog"><i></i></span>
+              <div class="vsx-now-foot"><span>1:00p</span><span>ends 2:15p</span></div>
+            </div>
+          </div>
+          <div class="vsx-more"><i></i><span>+ 5 more</span></div>
         </div>
-        <div class="vs-cta">${G.spark} Explore your day</div>
       </div>
-      <div class="vs-card vs-insight">
-        <div class="vs-card-top"><span class="vs-kicker">Focus Insight</span><span class="vs-streak" style="color:var(--accent-deep);background:rgba(89,91,205,0.12)">2h 14m today</span></div>
-        <div class="vs-bars"><i style="--h:42%"></i><i style="--h:58%"></i><i style="--h:36%"></i><i style="--h:72%"></i><i style="--h:54%"></i><i style="--h:88%"></i><i style="--h:64%"></i></div>
-      </div>
-      ${tabbar('home')}
+      ${dock('home')}
     </div></div>`;
   }
 
   function vsCalendar() {
-    const dot = (c) => `<i style="background:${c}"></i>`;
-    const date = (n, cls, dots) =>
-      `<div class="vs-date ${cls}"><span class="vs-dnum">${n}</span><span class="vs-ddots">${dots}</span></div>`;
-    const ev = (txt, time, bg, col) =>
-      `<div class="vs-ev" style="background:${bg};color:${col}">${txt}<div class="evt">${time}</div></div>`;
-    const evMap = {
-      '9 AM': [3, ev('Physics 4B', '9:00a', 'rgba(113,191,157,0.22)', '#3f9a72')],
-      '11 AM': [1, ev('CS 101', '10:30a', 'rgba(89,91,205,0.16)', '#4646b0')],
-      '1 PM': [2, ev('Calculus II', '1:00p', 'rgba(239,142,142,0.2)', '#c4595b')],
-    };
-    const hours = ['6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM'];
-    const rows = hours
-      .map((h) => {
-        const e = evMap[h];
-        let lanes = '';
-        for (let c = 1; c <= 3; c++) lanes += `<div class="lane">${e && e[0] === c ? e[1] : ''}</div>`;
-        return `<div class="hour">${h}</div>${lanes}`;
-      })
-      .join('');
-    return `<div class="vscreen"><div class="vs vs-cal">
+    const day = (l, n, dots, sel) =>
+      `<div class="vsx-day${sel ? ' sel' : ''}"><i>${l}</i><b>${n}</b><span>${dots.map((c) => `<u style="background:${c}"></u>`).join('')}</span></div>`;
+    return `<div class="vscreen"><div class="vs">
       ${statusBar()}
       <div class="vs-head">
-        <div><div class="vs-eyebrow">3-Day Span</div><div class="vs-title">May 31</div></div>
+        <div><div class="vs-eyebrow">Today</div><div class="vs-title">Jul 3</div></div>
+      </div>
+      <div class="vsx-monthbar">
+        <span class="vsx-mpill">${G.chevL}<b>July <i>2026</i></b>${G.chevD}${G.chevR}</span>
+        <span class="vsx-mtools"><span class="flip"><u></u></span>${G.plus}</span>
+      </div>
+      <div class="vsx-weekstrip">
+        ${day('S', '28', ['var(--amber)', 'var(--coral)'])}
+        ${day('M', '29', ['var(--mint)'])}
+        ${day('T', '30', ['var(--accent)', 'var(--coral)'])}
+        ${day('W', '1', ['var(--mint)', 'var(--coral)', 'var(--accent)'])}
+        ${day('T', '2', ['var(--coral)', 'var(--accent)'])}
+        ${day('F', '3', ['var(--mint)', 'var(--coral)', 'var(--accent)'], true)}
+        ${day('S', '4', ['var(--amber)'])}
+      </div>
+      <div class="vsx-sumbar">
+        <span class="vsx-sum">${G.cal}<b>6 planned</b><span>· 3 due · 11h 30m free</span></span>
+        <span class="vsx-zoom">${G.harr}<b>24h</b>${G.vsel}</span>
+      </div>
+      <span class="vsx-allday"><i></i>Independence Day (observed)</span>
+      <div class="vsx-tl cal">
+        ${vsxWave}
+        ${vsxJob('12:30a', '3:00a', 'Cafe', '12:30a – 3a · Opening', '')}
+        ${vsxPlan('11h 30m free')}
+        <div class="vsx-row">${vsxTime('1:00p', '2:15p')}${vsxDot('live')}
+          <div class="vsx-card"><span class="bar" style="background:var(--coral)"></span><b>Calculus II</b><span class="sub">1:00p – 2:15p · 75 min</span></div>
+        </div>
+      </div>
+      ${dock('cal')}
+    </div></div>`;
+  }
+
+  function vsCourses() {
+    const cls = (time, node, name, live, dur, tint, past) =>
+      `<div class="vsx-class${past ? ' past' : ''}">
+        <span class="t">${time}</span>
+        <span class="node ${node}" style="--c:${tint}"></span>
+        <span class="nm"><b>${name}</b>${live ? '<em>LIVE</em>' : ''}</span>
+        <span class="dur" style="--c:${tint}">${dur}</span>
+      </div>`;
+    return `<div class="vscreen"><div class="vs">
+      ${statusBar()}
+      <div class="vs-head">
+        <div><div class="vs-eyebrow">3 active</div><div class="vs-title">Courses</div></div>
         <div class="vs-head-btns"><span class="vs-hb">${G.plus}</span></div>
       </div>
-      <div class="vs-month"><span class="mnav">${G.chevL}</span>May 2026<span class="mnav">${G.chevR}</span><span class="mnav">${G.chevD}</span></div>
-      <div class="vs-datestrip">
-        ${date('31', 'active', dot('var(--accent)') + dot('var(--coral)'))}
-        ${date('1', '', dot('var(--mint)'))}
-        ${date('2', 'dim', dot('var(--coral)') + dot('var(--amber)'))}
-        ${date('3', 'dim', dot('var(--mint)') + dot('var(--coral)'))}
-        ${date('4', 'dim', dot('var(--accent)') + dot('var(--coral)'))}
-        ${date('5', 'dim', dot('var(--mint)') + dot('var(--coral)'))}
-        ${date('6', 'dim', '')}
+      <div class="vsx-hero vsx-cohero">
+        <div class="vsx-hero-top"><span class="vsx-kicker">Summer 2026</span><span class="vsx-streak co">${G.cal} <i>week 3 of 15</i> ${G.slider}</span></div>
+        <div class="vsx-h">3 classes today.</div>
+        <div class="vsx-term">
+          <div class="ends"><span>Jun 18</span><span>Finals · Oct 1</span></div>
+          <div class="track">
+            <span class="fill"></span>
+            <span class="tick"></span>
+            <span class="now"></span>
+          </div>
+          <div class="cap"><span>14% · Week 3 of 15</span><b>This week ${G.shrink}</b></div>
+        </div>
+        <div class="vsx-classes">
+          ${cls('9:00am', 'past', 'Physics 4B', false, '50m', 'var(--mint)', true)}
+          ${cls('1:00pm', 'live', 'Calculus II', true, '75m', 'var(--coral)')}
+          ${cls('2:00pm', 'next', 'CS 101', false, '75m', 'var(--accent)')}
+        </div>
+        <div class="vsx-cta">${G.spark} Explore your semester</div>
       </div>
-      <div class="vs-seg"><span>My Day</span><span class="on">3 Day</span></div>
-      <div class="vs-grid">${rows}</div>
-      ${tabbar('cal')}
+      <div class="vsx-liveband">
+        <span class="dot"></span>
+        <span class="meta"><b>Calculus II <em>LIVE</em></b><span>1:00p – 2:15p</span></span>
+        <span class="left">1h 9m left</span>
+      </div>
+      <div class="vsx-metrics">
+        <span><b>9</b><i>Pending</i></span>
+        <span><b>64%</b><i>Done</i></span>
+        <span><b>3.85</b><i>GPA</i></span>
+      </div>
+      <div class="vsx-courserow">
+        <span class="cbar"></span>
+        <span class="cmeta"><b>Calculus II <em>LIVE</em></b><span>Next · Today 1:00p · 4 pending</span></span>
+        <span class="vsx-ring" style="--c:var(--coral);--v:62%">62</span>
+      </div>
+      ${dock('courses')}
     </div></div>`;
   }
 
@@ -440,7 +684,7 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
       <div class="flow-ui">
         ${statusBar()}
         <div class="flow-top"><span class="ft-ico">${G.chevL}</span><span class="ft-title">${title}</span><span class="ft-ico">${icon}</span></div>
-        <div class="flow-center"><div class="flow-blob"></div><div class="flow-time"><span class="mmss">${time}</span><span class="centi">.00</span></div><div class="flow-status"><i></i> ${status}</div></div>
+        <div class="flow-center"><div class="flow-blob"></div><div class="flow-time" data-seconds="${secs}"><span class="mmss">${time}</span><span class="centi">.00</span></div><div class="flow-status"><i></i> ${status}</div></div>
         <div class="flow-controls"><span class="flow-btn">${G.flag}</span><span class="flow-btn primary">${G.pause}</span><span class="flow-btn">${G.stop}</span></div>
       </div>
     </div>`;
@@ -449,61 +693,18 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
   const SCREENS = {
     home: vsHome,
     calendar: vsCalendar,
+    courses: vsCourses,
     endless: () => flowVScreen('endless', 'Endless Flow', G.inf, '24:13', 1453, 'FLOWING'),
-    regular: () => flowVScreen('regular', 'Regular Flow', G.clock, '18:42', 1122, 'FOCUS'),
-    break: () => flowVScreen('break', 'Break Time', G.cup, '04:32', 272, 'BREAK'),
+    regular: () => flowVScreen('regular', 'Regular Flow', G.inf, '18:42', 1122, 'FOCUS'),
   };
 
-  // A theme-agnostic Home screen for the comparison slider. Colours, font, and
-  // (sketch) rough borders are all driven by CSS vars on the .theme-* wrapper.
-  function themeHome() {
-    return `<div class="th-screen">
-      <div class="th-status"><span>5:03</span><span class="th-status-r">${G.wifi}<span class="th-batt"></span></span></div>
-      <div class="th-head">
-        <div><div class="th-eyebrow">Sunday · May 31</div><div class="th-title">Good evening</div></div>
-        <div class="th-hbtns"><span class="th-hb">${G.spark}</span><span class="th-hb">${G.user}</span><span class="th-hb">${G.gear}</span></div>
-      </div>
-      <div class="th-card">
-        <div class="th-card-top"><span class="th-kicker">My Day</span><span class="th-streak">${G.flame} 5 day</span></div>
-        <div class="th-card-h">5 stops on your day.</div>
-        <div class="th-timeline">
-          <svg class="th-wave" viewBox="0 0 20 200" preserveAspectRatio="none" fill="none" stroke="var(--tc-accent)" stroke-opacity="0.5" stroke-width="3" stroke-linecap="round"><path d="M10 0 Q2 28 10 56 Q18 88 10 120 Q3 154 10 180 Q14 194 10 200"/></svg>
-          <div class="th-stop"><span class="t">1:00p</span><span class="ring" style="--c:var(--tc-coral)"></span><b>Calculus II</b><span class="dur">1h 15m</span></div>
-          <div class="th-stop"><span class="t">6:00p</span><span class="ring" style="--c:var(--tc-accent)"></span><b>CS 101</b><span class="dur">1h 15m</span></div>
-          <div class="th-stop"><span class="t">8:00p</span><span class="ring" style="--c:var(--tc-mint)"></span><b>Reading 2</b><span class="dur">CS 101</span></div>
-        </div>
-        <div class="th-cta">${G.spark} Explore your day</div>
-      </div>
-      <div class="th-tabbar">
-        <div class="th-tab active"><span class="th-tab-ico">${G.home}</span>Home</div>
-        <div class="th-tab"><span class="th-tab-ico">${G.cal}</span>Calendar</div>
-        <div class="th-tab"><span class="th-tab-ico">${G.book}</span>Courses</div>
-        <div class="th-wind">${G.wind}</div>
-      </div>
-    </div>`;
-  }
-
-  // build every [data-vec="a,b,c"] slot, and mark multi-screen slots for cycling
+  /* build every [data-vec] slot */
   document.querySelectorAll('[data-vec]').forEach((slot) => {
     const list = slot.dataset.vec.split(',').map((s) => s.trim()).filter((s) => SCREENS[s]);
     slot.innerHTML = list.map((name) => SCREENS[name]()).join('');
     const first = slot.querySelector('.vscreen');
     if (first) first.classList.add('on');
-    if (list.length > 1) slot.setAttribute('data-cycle', '');
   });
-
-  /* crossfade an element's screens so a phone shows several states */
-  function setupCycle(screen) {
-    const items = [...screen.children].filter((c) => c.matches('.vscreen'));
-    if (items.length < 2 || reduce) return;
-    let i = 0;
-    setInterval(() => {
-      items[i].classList.remove('on');
-      i = (i + 1) % items.length;
-      items[i].classList.add('on');
-    }, 3600);
-  }
-  document.querySelectorAll('[data-cycle]').forEach(setupCycle);
 
   /* polished inner chamfer layer for every phone */
   document.querySelectorAll('.phone').forEach((p) => {
@@ -560,97 +761,159 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
     window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(api.rebuild, 150); });
     return api;
   }
-
   const flowDots = [...document.querySelectorAll('.flow-dots')].map((c) => makeFlowDots(c));
 
-  /* ── ticking focus timers ── */
-  const flowScreens = [...document.querySelectorAll('.flow-screen[data-seconds]')].map((s) => ({
-    base: parseInt(s.dataset.seconds, 10),
-    mmss: s.querySelector('.flow-time .mmss'),
-    centi: s.querySelector('.flow-time .centi'),
+  /* ── ticking timers (phone screens + the flow band hero clock) ── */
+  const tickers = [...document.querySelectorAll('.flow-time[data-seconds], .fb-time[data-seconds]')].map((el) => ({
+    base: parseInt(el.dataset.seconds, 10),
+    mmss: el.querySelector('.mmss'),
+    centi: el.querySelector('.centi'),
   }));
   const fmt = (sec) => `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
-  let flowT0 = performance.now();
-  function startFlowTimers() {
-    if (reduce || !flowScreens.length) return;
-    flowT0 = performance.now();
+  if (!reduce && tickers.length) {
+    const t0 = performance.now();
     setInterval(() => {
-      const el = (performance.now() - flowT0) / 1000;
-      flowScreens.forEach((f) => {
-        if (f.mmss) f.mmss.textContent = fmt(f.base + Math.floor(el));
-      });
+      const el = (performance.now() - t0) / 1000;
+      tickers.forEach((f) => { if (f.mmss) f.mmss.textContent = fmt(f.base + Math.floor(el)); });
     }, 1000);
     setInterval(() => {
       const ms = Math.floor((performance.now() % 1000) / 10);
       const tail = '.' + String(ms).padStart(2, '0');
-      flowScreens.forEach((f) => { if (f.centi) f.centi.textContent = tail; });
+      tickers.forEach((f) => { if (f.centi) f.centi.textContent = tail; });
     }, 90);
   }
 
-  /* ── dotted ripple background ── */
-  function makeMatrix(canvas) {
-    const ctx = canvas.getContext('2d');
-    const GAP = 28, RGB = '89, 91, 205';
-    let w = 0, h = 0, dots = [], raf = 0, startT = 0, rz;
-    function build() {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = rect.width; h = rect.height;
-      if (!w || !h) return;
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.fillStyle = `rgb(${RGB})`;
-      dots = [];
-      for (let y = GAP / 2; y < h; y += GAP)
-        for (let x = GAP / 2; x < w; x += GAP) dots.push([x, y]);
-    }
-    function drawStatic() {
-      if (!w) return;
-      ctx.clearRect(0, 0, w, h);
-      ctx.globalAlpha = 0.16;
-      for (const d of dots) { ctx.beginPath(); ctx.arc(d[0], d[1], 1.4, 0, 6.2832); ctx.fill(); }
-      ctx.globalAlpha = 1;
-    }
-    function draw(time) {
-      const cx = w / 2, cy = h * 0.4;
-      ctx.clearRect(0, 0, w, h);
-      for (const d of dots) {
-        const dx = d[0] - cx, dy = d[1] - cy;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const m = (Math.sin(dist * 0.021 - time * 1.7) + 1) / 2;
-        ctx.globalAlpha = 0.05 + m * 0.24;
-        ctx.beginPath(); ctx.arc(d[0], d[1], 0.8 + m * 1.9, 0, 6.2832); ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-    }
-    function loop(t) { if (!startT) startT = t; draw((t - startT) / 1000); raf = requestAnimationFrame(loop); }
-    const api = {
-      play() { if (reduce) { build(); drawStatic(); return; } if (!raf) raf = requestAnimationFrame(loop); },
-      pause() { cancelAnimationFrame(raf); raf = 0; },
-      rebuild() { build(); if (reduce) drawStatic(); },
-    };
-    build();
-    window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(api.rebuild, 150); });
-    return api;
+  /* ─────────────────────────────────────────────
+     PIXEL OCEAN — the login's living surf, ported.
+     Domain-warped FBM value noise on a soft square
+     grid; wave height maps onto a brand colour ramp
+     with sparkle riding the crests.
+     ───────────────────────────────────────────── */
+  function hash2(x, y) {
+    const h = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
+    return h - Math.floor(h);
   }
-  const matrix = (() => {
-    const c = document.querySelector('canvas.matrix');
-    return c ? makeMatrix(c) : null;
-  })();
-
-  /* start everything that's on-screen */
-  if (matrix) matrix.play();
-  flowDots.forEach((f) => f.play());
-  startFlowTimers();
-
-  document.addEventListener('visibilitychange', () => {
-    const act = document.hidden ? 'pause' : 'play';
-    if (matrix) matrix[act]();
-    flowDots.forEach((f) => f[act]());
+  const smooth = (t) => t * t * (3 - 2 * t);
+  function valueNoise(x, y) {
+    const xi = Math.floor(x), yi = Math.floor(y);
+    const xf = x - xi, yf = y - yi;
+    const a = hash2(xi, yi), b = hash2(xi + 1, yi), c = hash2(xi, yi + 1), d = hash2(xi + 1, yi + 1);
+    const u = smooth(xf), v = smooth(yf);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  }
+  function fbm(x, y) {
+    let value = 0, amp = 0.5, fx = x, fy = y;
+    for (let i = 0; i < 4; i++) {
+      value += amp * valueNoise(fx, fy);
+      fx *= 2.02; fy *= 1.98; amp *= 0.5;
+    }
+    return value;
+  }
+  const RAMPS = {
+    light: {
+      bg: 'rgb(226,228,240)',
+      stops: [
+        [0.0, [244, 244, 250]],
+        [0.3, [230, 231, 246]],
+        [0.52, [199, 201, 242]],
+        [0.7, [158, 159, 234]],
+        [0.86, [107, 109, 214]],
+        [1.0, [63, 63, 180]],
+      ],
+    },
+    dark: {
+      bg: 'rgb(23,24,47)',
+      stops: [
+        [0.0, [23, 24, 47]],
+        [0.34, [35, 36, 74]],
+        [0.56, [63, 63, 180]],
+        [0.74, [107, 109, 214]],
+        [0.9, [158, 159, 234]],
+        [1.0, [222, 222, 250]],
+      ],
+    },
+  };
+  function makeOcean(canvas, ramp) {
+    const ctx = canvas.getContext('2d');
+    const CELL = 11, GAP = 1.5;
+    const { stops, bg } = ramp;
+    const rampColor = (t) => {
+      const v = Math.min(1, Math.max(0, t));
+      for (let i = 1; i < stops.length; i++) {
+        if (v <= stops[i][0]) {
+          const [t0, c0] = stops[i - 1];
+          const [t1, c1] = stops[i];
+          const k = (v - t0) / (t1 - t0);
+          return [c0[0] + (c1[0] - c0[0]) * k, c0[1] + (c1[1] - c0[1]) * k, c0[2] + (c1[2] - c0[2]) * k];
+        }
+      }
+      return stops[stops.length - 1][1];
+    };
+    const draw = (t) => {
+      const wrap = canvas.parentElement;
+      if (!wrap) return;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      const W = wrap.clientWidth, H = wrap.clientHeight;
+      if (!W || !H) return;
+      if (canvas.width !== Math.round(W * dpr) || canvas.height !== Math.round(H * dpr)) {
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+      }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+      const cols = Math.ceil(W / CELL), rows = Math.ceil(H / CELL);
+      for (let gy = 0; gy < rows; gy++) {
+        for (let gx = 0; gx < cols; gx++) {
+          const nx = gx * 0.09, ny = gy * 0.11;
+          const bend =
+            0.5 * Math.sin(nx * 1.35 + t * 0.85) +
+            0.28 * Math.sin(nx * 2.5 - t * 0.55) +
+            0.9 * (fbm(nx * 0.55 + t * 0.06, ny * 0.5 - t * 0.04) - 0.5);
+          let hgt = 0.5 + 0.5 * Math.sin((ny + bend) * 3.4 - t * 0.7);
+          hgt = Math.pow(Math.min(1, Math.max(0, hgt)), 2.1);
+          if (hgt > 0.62) {
+            const sparkle = valueNoise(gx * 3.1 + t * 2.2, gy * 3.3 - t * 1.7);
+            hgt = Math.min(1, hgt + (sparkle > 0.86 ? 0.5 : 0) * (hgt - 0.62));
+          }
+          const [r, g, b] = rampColor(hgt);
+          ctx.fillStyle = `rgb(${r | 0},${g | 0},${b | 0})`;
+          ctx.beginPath();
+          ctx.roundRect(gx * CELL + GAP / 2, gy * CELL + GAP / 2, CELL - GAP, CELL - GAP, 2);
+          ctx.fill();
+        }
+      }
+    };
+    if (reduce) {
+      draw(4.2);
+      return { setActive() {} };
+    }
+    let raf = 0, last = 0, active = false;
+    const tick = (ms) => {
+      raf = requestAnimationFrame(tick);
+      if (document.hidden || ms - last < 40) return; // ~25fps — plenty for surf
+      last = ms;
+      draw(ms / 1000);
+    };
+    return {
+      setActive(on) {
+        if (on && !active) { active = true; raf = requestAnimationFrame(tick); }
+        else if (!on && active) { active = false; cancelAnimationFrame(raf); }
+      },
+    };
+  }
+  /* run each ocean only while it's on screen */
+  document.querySelectorAll('canvas[data-ocean]').forEach((cv) => {
+    const ocean = makeOcean(cv, RAMPS[cv.dataset.ocean] || RAMPS.light);
+    if (reduce) return;
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => ocean.setActive(e.isIntersecting)),
+      { rootMargin: '80px' }
+    );
+    io.observe(cv);
   });
 
-  /* hero entrance — only arm once the timeline is confirmed advancing */
+  /* ── hero entrance — only arm once the timeline is confirmed advancing ── */
   if (!reduce) {
     requestAnimationFrame((t1) =>
       requestAnimationFrame((t2) => {
@@ -659,20 +922,120 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
     );
   }
 
-  /* hero background parallax */
-  if (!reduce) {
-    let ticking = false;
-    addEventListener('scroll', () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        document.querySelectorAll('.hero-bg').forEach((bg) => {
-          bg.style.transform = `translateY(${window.scrollY * 0.22}px)`;
-        });
-        ticking = false;
-      });
-    }, { passive: true });
+  /* ── hero stage tilt — the phone cluster leans toward the pointer ── */
+  const tilt = document.querySelector('[data-tilt]');
+  if (tilt && !reduce && matchMedia('(pointer: fine)').matches) {
+    let tx = 0, ty = 0, cx = 0, cy = 0, rafT = 0;
+    const hero = tilt.closest('.hero');
+    const settle = () => {
+      cx += (tx - cx) * 0.08;
+      cy += (ty - cy) * 0.08;
+      tilt.style.transform = `rotateY(${cx}deg) rotateX(${-cy}deg)`;
+      if (Math.abs(tx - cx) > 0.01 || Math.abs(ty - cy) > 0.01) rafT = requestAnimationFrame(settle);
+      else rafT = 0;
+    };
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 7;
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 5;
+      if (!rafT) rafT = requestAnimationFrame(settle);
+    });
+    hero.addEventListener('pointerleave', () => {
+      tx = 0; ty = 0;
+      if (!rafT) rafT = requestAnimationFrame(settle);
+    });
   }
+
+  /* ── magnetic CTAs — nudge toward the pointer, spring back ── */
+  if (!reduce && matchMedia('(pointer: fine)').matches) {
+    document.querySelectorAll('.magnetic').forEach((el) => {
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width / 2);
+        const dy = e.clientY - (r.top + r.height / 2);
+        el.style.transform = `translate(${dx * 0.18}px, ${dy * 0.26}px)`;
+      });
+      el.addEventListener('pointerleave', () => {
+        el.style.transform = '';
+      });
+    });
+  }
+
+  /* ── rails — the wavy connectors draw themselves as you scroll ── */
+  const railPaths = [...document.querySelectorAll('.rail-line path')].map((p) => {
+    const L = p.getTotalLength();
+    p.style.strokeDasharray = String(L);
+    p.style.strokeDashoffset = String(reduce ? 0 : L);
+    return { p, L };
+  });
+  if (!reduce && railPaths.length) {
+    let railTick = false;
+    const drawRails = () => {
+      const vh = innerHeight;
+      railPaths.forEach(({ p, L }) => {
+        const r = p.closest('.rail-line').getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        const prog = Math.min(1, Math.max(0, (vh * 0.82 - r.top) / (r.height + vh * 0.24)));
+        p.style.strokeDashoffset = String(L * (1 - prog));
+      });
+      railTick = false;
+    };
+    addEventListener('scroll', () => {
+      if (!railTick) { railTick = true; requestAnimationFrame(drawRails); }
+    }, { passive: true });
+    drawRails();
+  }
+
+  /* ── chapter phones — a gentle scroll parallax drift ── */
+  const chapterPhones = [...document.querySelectorAll('[data-chapter-phone]')];
+  if (!reduce && chapterPhones.length) {
+    let phTick = false;
+    const drift = () => {
+      const vh = innerHeight;
+      chapterPhones.forEach((ph) => {
+        const r = ph.getBoundingClientRect();
+        if (r.bottom < -80 || r.top > vh + 80) return;
+        const c = (r.top + r.height / 2 - vh / 2) / vh; // -0.5..0.5
+        ph.style.transform = `translateY(${c * -26}px) rotate(${c * -2.2}deg)`;
+      });
+      phTick = false;
+    };
+    addEventListener('scroll', () => {
+      if (!phTick) { phTick = true; requestAnimationFrame(drift); }
+    }, { passive: true });
+    drift();
+  }
+
+  /* ── count-ups (GPA tile) ── */
+  const counters = document.querySelectorAll('[data-count]');
+  if (counters.length) {
+    const runCount = (el) => {
+      const target = parseFloat(el.dataset.count);
+      const dec = parseInt(el.dataset.decimals || '0', 10);
+      if (reduce) { el.textContent = target.toFixed(dec); return; }
+      const t0 = performance.now(), DUR = 1300;
+      const step = (now) => {
+        const p = Math.min(1, (now - t0) / DUR);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = (target * eased).toFixed(dec);
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) { runCount(e.target); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach((el) => io.observe(el));
+  }
+
+  /* start canvases + pause everything when the tab hides */
+  flowDots.forEach((f) => f.play());
+  document.addEventListener('visibilitychange', () => {
+    const act = document.hidden ? 'pause' : 'play';
+    flowDots.forEach((f) => f[act]());
+  });
 
   /* FAQ accordion */
   document.querySelectorAll('.faq-q').forEach((q) => {
@@ -684,7 +1047,34 @@ const checkGlyph = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" 
     });
   });
 
-  /* Theme comparison slider — drag the handle to wipe between Living Flow & Sketch */
+  /* ── theme comparison slider — drag to wipe Living Flow ↔ Sketch ── */
+  function themeHome() {
+    return `<div class="th-screen">
+      <div class="th-status"><span>5:03</span><span class="th-status-r">${G.wifi}<span class="th-batt"></span></span></div>
+      <div class="th-head">
+        <div><div class="th-eyebrow">Sunday · May 31</div><div class="th-title">Good evening</div></div>
+        <div class="th-hbtns"><span class="th-hb">${G.spark}</span><span class="th-hb">${G.user}</span><span class="th-hb">${G.gear}</span></div>
+      </div>
+      <div class="th-card">
+        <div class="th-card-top"><span class="th-kicker">My Day</span><span class="th-streak">${G.flame} 5 day</span></div>
+        <div class="th-card-h">5 stops on your day.</div>
+        <div class="th-timeline">
+          <svg class="th-wave" viewBox="0 0 20 200" preserveAspectRatio="none" fill="none" stroke="var(--tc-accent)" stroke-opacity="0.5" stroke-width="3" stroke-linecap="round"><path d="M10 0 Q2 28 10 56 Q18 88 10 120 Q3 154 10 180 Q14 194 10 200"/></svg>
+          <div class="th-stop"><span class="t">1:00p</span><span class="ring" style="--c:var(--tc-coral)"></span><b>Calculus II</b><span class="dur">1h 15m</span></div>
+          <div class="th-stop"><span class="t">6:00p</span><span class="ring" style="--c:var(--tc-accent)"></span><b>CS 101</b><span class="dur">1h 15m</span></div>
+          <div class="th-stop"><span class="t">8:00p</span><span class="ring" style="--c:var(--tc-mint)"></span><b>Reading 2</b><span class="dur">CS 101</span></div>
+        </div>
+        <div class="th-cta">${G.spark} Explore your day</div>
+      </div>
+      <div class="th-tabbar">
+        <div class="th-tab active"><span class="th-tab-ico">${G.home}</span>Home</div>
+        <div class="th-tab"><span class="th-tab-ico">${G.cal}</span>Calendar</div>
+        <div class="th-tab"><span class="th-tab-ico">${G.book}</span>Courses</div>
+        <div class="th-wind">${G.wind}</div>
+      </div>
+    </div>`;
+  }
+
   const tc = document.querySelector('[data-theme-compare]');
   if (tc) {
     tc.querySelectorAll('[data-theme-home]').forEach((host) =>

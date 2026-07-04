@@ -653,6 +653,10 @@ body.modal-open {
 .app-body .apple-pill {
   color: #fff;
 }
+/* the Apple mark itself carries the brand indigo */
+.app-body .apple-pill svg {
+  color: var(--accent);
+}
 .apple-pill:hover {
   transform: translateY(-2px);
   box-shadow: 0 14px 28px -12px rgba(0, 0, 0, 0.4);

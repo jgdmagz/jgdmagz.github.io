@@ -265,6 +265,10 @@ main {
   padding: 0.22rem 0.6rem;
   border-radius: 999px;
 }
+.pill-new {
+  color: #3f9a72;
+  background: rgba(113, 191, 157, 0.16);
+}
 
 /* ── Footer ── */
 .footer {
