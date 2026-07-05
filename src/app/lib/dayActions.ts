@@ -34,6 +34,8 @@ export function useDayActions(day: Date, setSheet: (s: DaySheet) => void) {
       course_id: null,
       is_all_day: false,
       completed_occurrences: [],
+      is_job: false,
+      job_name: '',
     };
     await store.upsertBlock(row);
     push(`Planned ${fmtMinutes((end.getTime() - start.getTime()) / 60000)} of focus`, () =>

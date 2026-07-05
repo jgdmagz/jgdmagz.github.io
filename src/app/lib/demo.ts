@@ -210,6 +210,8 @@ export function demoData(): DemoData {
       course_id: 'demo-course-ds',
       is_all_day: false,
       completed_occurrences: [],
+      is_job: false,
+      job_name: '',
     },
     {
       id: 'demo-b-evening',
@@ -230,6 +232,8 @@ export function demoData(): DemoData {
       course_id: 'demo-course-lin',
       is_all_day: false,
       completed_occurrences: [],
+      is_job: false,
+      job_name: '',
     },
     {
       id: 'demo-b-gym',
@@ -250,6 +254,8 @@ export function demoData(): DemoData {
       course_id: null,
       is_all_day: false,
       completed_occurrences: [],
+      is_job: false,
+      job_name: '',
     },
   ];
 

@@ -107,6 +107,8 @@ export function EventSheet({
       course_id: courseId || null,
       is_all_day: block?.is_all_day ?? false,
       completed_occurrences: block?.completed_occurrences ?? [],
+      is_job: block?.is_job ?? false,
+      job_name: block?.job_name ?? '',
     };
     await upsertBlock(row);
     onClose();

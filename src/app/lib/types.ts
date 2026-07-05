@@ -80,6 +80,9 @@ export interface TimeBlockRow {
   course_id: string | null;
   is_all_day: boolean;
   completed_occurrences: string[];
+  /** Work shift (app v1.6 "Jobs") — renders amber-striped in the app. */
+  is_job: boolean;
+  job_name: string;
 }
 
 /* ── Palettes (ported from the app) ─────────────────────────────── */

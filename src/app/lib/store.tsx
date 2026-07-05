@@ -189,6 +189,77 @@ export function StoreProvider({ children, demo = false }: { children: ReactNode;
     if (!demo && user) await load(user.id);
   }, [demo, user, load]);
 
+  /* ── Live sync — mirror changes made in the iOS app (or another tab).
+     Postgres changes stream over a realtime channel; RLS scopes events to
+     this user. DELETE events carry only the primary key and are broadcast
+     unfiltered (Supabase caveat), so removals are id-matched — ids we don't
+     hold are no-ops. A visibility refetch catches anything missed while the
+     tab was hidden or the socket was down. ── */
+
+  useEffect(() => {
+    if (demo || authStatus !== 'signed-in' || !user) return;
+    const uid = user.id;
+
+    const upsert = <T extends { id: string }>(rows: T[], row: T): T[] => {
+      const exists = rows.some((r) => r.id === row.id);
+      return exists ? rows.map((r) => (r.id === row.id ? row : r)) : [...rows, row];
+    };
+    const table = (name: string) => ({
+      event: '*' as const,
+      schema: 'public',
+      table: name,
+      filter: `user_id=eq.${uid}`,
+    });
+
+    const channel = supabase
+      .channel(`sync-${uid}`)
+      .on('postgres_changes', table('courses'), (p) => {
+        if (p.eventType === 'DELETE') {
+          const id = (p.old as { id?: string }).id;
+          if (!id) return;
+          setCourses((prev) => prev.filter((c) => c.id !== id));
+          // The server cascades the course's assignments.
+          setAssignments((prev) => prev.filter((a) => a.course_id !== id));
+        } else {
+          setCourses((prev) => upsert(prev, p.new as CourseRow));
+        }
+      })
+      .on('postgres_changes', table('assignments'), (p) => {
+        if (p.eventType === 'DELETE') {
+          const id = (p.old as { id?: string }).id;
+          if (!id) return;
+          setAssignments((prev) => prev.filter((a) => a.id !== id));
+        } else {
+          setAssignments((prev) =>
+            upsert(prev, p.new as AssignmentRow).sort((x, y) => x.due_at.localeCompare(y.due_at))
+          );
+        }
+      })
+      .on('postgres_changes', table('time_blocks'), (p) => {
+        if (p.eventType === 'DELETE') {
+          const id = (p.old as { id?: string }).id;
+          if (!id) return;
+          setBlocks((prev) => prev.filter((b) => b.id !== id));
+        } else {
+          setBlocks((prev) =>
+            upsert(prev, p.new as TimeBlockRow).sort((x, y) => x.start_at.localeCompare(y.start_at))
+          );
+        }
+      })
+      .subscribe();
+
+    const refetch = () => {
+      if (document.visibilityState === 'visible') load(uid);
+    };
+    document.addEventListener('visibilitychange', refetch);
+    window.addEventListener('online', refetch);
+    return () => {
+      supabase.removeChannel(channel);
+      document.removeEventListener('visibilitychange', refetch);
+      window.removeEventListener('online', refetch);
+    };
+  }, [demo, authStatus, user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
   /* ── Auth actions ── */
 
   const signInWithApple = useCallback(async () => {
